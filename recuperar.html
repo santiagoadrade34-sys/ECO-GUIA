@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIRRY - RECUPERAR ACCESO</title>
+    <!-- Vinculación limpia de tus estilos modulares -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/recuperar.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='imagenes/ui/logo-shirry.webp') }}">
+</head>
+<body class="login-page recovery-page">
+
+    <!-- CABECERA DE MARCA OFICIAL -->
+    <h1 class="brand-header" style="margin-bottom: 25px;">
+        <a href="{{ url_for('inicio') }}" class="brand-link">SHIRRY OFFICIAL</a>
+    </h1>
+
+    <!-- TARJETA COMPACTA VERTICAL ESTILO REFERENCIA -->
+    <div class="recovery-card">
+        
+        <!-- INDICADOR DE PASOS ESTILO WIZARD -->
+        <div class="wizard-steps" style="margin-top: 0; margin-bottom: 35px;">
+            <div class="step-node {% if session.get('recuperar_paso') == 1 %}active{% endif %}">1</div>
+            <div class="step-node {% if session.get('recuperar_paso') == 2 %}active{% endif %}">2</div>
+            <div class="step-node {% if session.get('recuperar_paso') == 3 %}active{% endif %}">3</div>
+        </div>
+
+        <!-- CONTROL DE ALERTAS DE ERROR TERMINAL -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert-terminal-error">
+                        🛑 SYSTEM_ALERT // {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- PASO 1: INGRESAR EMAIL -->
+        {% if session.get('recuperar_paso') == 1 %}
+        <h2>Recuperar Contraseña</h2>
+        <div class="recovery-subtitle">Ingresa tu correo y te enviaremos un código de verificación de acceso.</div>
+        
+        <form action="{{ url_for('recuperar_paso1') }}" method="POST" style="background: transparent; padding: 0; height: auto; width: 100%;">
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="display:block; margin-bottom: 8px; color: #aaaaaa; font-size: 14px;">Correo electrónico</label>
+                <input type="email" name="email" placeholder="tucorreo@ejemplo.com" required autocomplete="off" style="width:100%;">
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 14px; background: #ffaa00; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer;">Enviar código</button>
+        </form>
+        {% endif %}
+
+        <!-- PASO 2: INGRESAR TOKEN ALFANUMÉRICO -->
+        {% if session.get('recuperar_paso') == 2 %}
+        <h2>Verificar Identidad</h2>
+        <div class="recovery-subtitle">Introduce el código alfanumérico temporal que fue enviado a tu sistema.</div>
+        
+        <form action="{{ url_for('recuperar_paso2') }}" method="POST" style="background: transparent; padding: 0; height: auto; width: 100%;">
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="display:block; margin-bottom: 8px; color: #aaaaaa; font-size: 14px;">Código de verificación</label>
+                <input type="text" name="token" placeholder="Escribe los 6 dígitos" required autocomplete="off" style="width:100%; text-transform: uppercase;">
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 14px; background: #ffaa00; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer;">Validar terminal</button>
+        </form>
+        {% endif %}
+
+        <!-- PASO 3: NUEVA CONTRASEÑA -->
+        {% if session.get('recuperar_paso') == 3 %}
+        <h2>Actualizar Clave</h2>
+        <div class="recovery-subtitle">Establece tus nuevas credenciales de acceso de forma segura.</div>
+        
+        <form action="{{ url_for('recuperar_paso3') }}" method="POST" style="background: transparent; padding: 0; height: auto; width: 100%;">
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="display:block; margin-bottom: 8px; color: #aaaaaa; font-size: 14px;">Nueva contraseña</label>
+                <input type="password" name="nueva_clave" placeholder="Nueva clave" required style="width:100%;">
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 14px; background: #ffaa00; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer;">Restablecer credenciales</button>
+        </form>
+        {% endif %}
+
+        <!-- ENLACE DE RETORNO ESTILO REFERENCIA -->
+        <div style="margin-top: 25px; text-align: center;">
+            <a href="{{ url_for('login') }}" style="color: #aaaaaa; font-size: 13px; text-decoration: none;">← Volver al login</a>
+        </div>
+
+    </div>
+
+</body>
+</html>

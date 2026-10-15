@@ -1,0 +1,228 @@
+/* ==========================================================================
+   SHIRRY CORE - MANIFIESTO INDUSTRIAL / DISEÑO DE PÁGINA NOSOTROS + INTERACTIVO
+   ========================================================================== */
+.sc-nosotros-wrapper {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: monospace;
+    color: #ffffff;
+}
+
+.sc-nosotros-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    border-left: 3px solid #ff0055;
+    padding-left: 15px;
+}
+
+/* Layout asimétrico: 45% texto manifiesto / 55% collage o arte visual */
+.sc-nosotros-layout {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+}
+
+.sc-nosotros-text-block {
+    flex: 0 0 45%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.sc-nosotros-subtitle {
+    font-size: 1rem;
+    color: #00ffcc;
+    letter-spacing: 1px;
+    margin: 0;
+    text-transform: uppercase;
+    border-bottom: 1px dashed #222;
+    padding-bottom: 8px;
+}
+
+.sc-nosotros-paragraph {
+    color: #aaaaaa;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+/* Caja de datos técnicos estilo bitácora del sistema */
+.sc-nosotros-terminal-box {
+    background: #050505;
+    border: 1px solid #111111;
+    padding: 25px; /* Aumentamos sutilmente el aire interno */
+    border-radius: 4px;
+    height: auto !important;     /* Evita que la altura se quede congelada */
+    min-height: fit-content;      /* Se estira orgánicamente según los elementos */
+    overflow: visible !important; /* Permite que las partículas de clics floten hacia afuera */
+    transition: all 0.3s ease-in-out;
+}
+
+
+.sc-terminal-line {
+    font-size: 0.75rem;
+    color: #444;
+    line-height: 1.5;
+}
+
+.sc-terminal-line strong {
+    color: #ff0055;
+}
+
+/* Columna Derecha: Contenedor de la Imagen/Arte Conceptual (55%) */
+.sc-nosotros-visual-block {
+    flex: 0 0 55%;
+    position: relative;
+}
+
+.sc-visual-frame {
+    width: 100%;
+    height: 480px;
+    border: 1px dashed #2d2d30;
+    padding: 15px;
+    box-sizing: border-box;
+    background: #000000;
+}
+
+.sc-nosotros-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(30%) contrast(110%);
+    border: 1px solid #111111;
+    transition: all 0.3s ease-in-out;
+}
+
+.sc-nosotros-img:hover {
+    filter: grayscale(0%) contrast(100%);
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+}
+
+/* ==========================================================================
+   SHIRRY CORE - REGLAS INTERACTIVAS DEL CLICKER OCULTO
+   ========================================================================== */
+
+/* Línea de activación secreta con cursor de celda */
+.sc-secret-trigger {
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s;
+}
+.sc-secret-trigger:hover {
+    color: #ff0055 !important; /* Pista visual sutil al pasar el mouse */
+}
+
+/* El contenedor del juego que nacerá escondido */
+#sc-hidden-clicker-zone {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    margin-top: 5px;
+    border-top: 1px dashed #222;
+    text-align: center;
+}
+
+#sc-hidden-clicker-zone.revealed {
+    display: block !important;
+    opacity: 1 !important;
+}
+
+/* El blanco del hackeo: El logo del lobo a minar */
+.sc-mining-target {
+    width: 140px !important;    /* Forzamos el ancho del marco */
+    height: 140px !important;   /* Forzamos el alto idéntico para que sea un cuadrado perfecto (1:1) */
+    object-fit: contain !important; /* EL ESCUDO: Evita que la imagen se estire, aplaste o deforme */
+    margin: 30px auto 15px auto; /* Más aire arriba y abajo para que respire y no se amontone */
+    cursor: pointer;
+    filter: drop-shadow(0 0 10px #ff0055);
+    user-select: none;
+    
+    /* Mantiene el renderizado del pixel art limpio y cortante */
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    
+    transition: transform 0.05s ease-in-out, filter 0.2s;
+}
+
+.sc-mining-target:active {
+    transform: scale(0.92);
+    filter: drop-shadow(0 0 20px #00ffcc);
+}
+
+
+/* Partículas de hackeo flotantes */
+.sc-click-particle {
+    position: absolute;
+    color: #00ffcc;
+    font-size: 0.75rem;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 9999;
+    animation: flyUpAndOut 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes flyUpAndOut {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translateY(-50px) scale(0.7);
+    }
+}
+
+/* Tarjeta elástica del código de descuento */
+.sc-reward-card {
+    background: #000000;
+    border: 1px dashed #00ffcc;
+    padding: 20px;
+    border-radius: 4px;
+    margin-top: 20px;
+    box-shadow: 0 0 25px rgba(0, 255, 204, 0.15);
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: none;
+}
+
+.sc-reward-card.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sc-promo-code {
+    background: #0d0d0d;
+    border: 1px solid #ff0055;
+    color: #ff0055;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    padding: 10px;
+    margin: 12px 0;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* Responsive: Se adapta de forma impecable a teléfonos móviles */
+@media (max-width: 992px) {
+    .sc-nosotros-layout {
+        flex-direction: column;
+        gap: 40px;
+    }
+    .sc-nosotros-text-block,
+    .sc-nosotros-visual-block {
+        flex: 0 0 100%;
+        width: 100%;
+    }
+    .sc-visual-frame {
+        height: 350px;
+    }
+}

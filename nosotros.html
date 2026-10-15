@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- INYECCIÓN FORZADA DEL CSS MODULAR DENTRO DEL BLOQUE CONTENT -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nosotros.css') }}">
+
+<div class="sc-nosotros-wrapper" style="position: relative;">
+    
+    <!-- ENCABEZADO DE CONTROL TÁCTICO -->
+    <h1 class="sc-nosotros-title">// MANIFIESTO_EMISION_MARCA</h1>
+
+    <div class="sc-nosotros-layout">
+        
+        <!-- COLUMNA IZQUIERDA: EL MANIFIESTO COMERCIAL (45%) -->
+        <div class="sc-nosotros-text-block">
+            
+            <div>
+                <h2 class="sc-nosotros-subtitle">EL_NÚCLEO_SHIRRY</h2>
+                <p class="sc-nosotros-paragraph" style="margin-top: 15px;">
+                    Nacimos bajo la premisa de desafiar la uniformidad del retail tradicional. En SHIRRY CORE, cada drop limitado y cada costura representan una declaración de identidad urbana, fusionando el streetwear crudo con una estética de sistemas industriales y cyberpunk.
+                </p>
+            </div>
+
+            <div>
+                <h2 class="sc-nosotros-subtitle">PRODUCCIÓN_LIMITADA</h2>
+                <p class="sc-nosotros-paragraph" style="margin-top: 15px;">
+                    No creemos en la sobreproducción masiva. Nuestras prendas se rigen bajo el concepto de escasez controlada. Una vez que un drop es emitido y agotado del inventario de Laragon, muta y nunca se vuelve a repetir.
+                </p>
+            </div>
+
+            <!-- BITÁCORA TÉCNICA (CON EL DETONADOR SECRETO INTEGRADO) -->
+            <div class="sc-nosotros-terminal-box" id="sc-terminal-box">
+                <!-- Línea con ID y clase secreta para el huevo de pascua -->
+                <div class="sc-terminal-line sc-secret-trigger" id="secret-trigger">>> SYSTEM: SHIRRY_CORE_ACTIVE</div>
+                <div class="sc-terminal-line">> LOCATION: BOGOTA_COL // CORE</div>
+                <div class="sc-terminal-line">> PROTOCOL: ENCRIPTACIÓN_CODO_SSL</div>
+                <div class="sc-terminal-line">> EST: 2024_MUTATION_v1.0</div>
+                
+                <!-- ÁREA DE JUEGO CLICKER OCULTA (NACE INVISIBLE) -->
+                <div id="sc-hidden-clicker-zone">
+                    <p style="color: #ff0055; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; margin: 20px 0 10px 0;">
+                        // BREACH_DETEC_ALERTA: HACKEA EL NÚCLEO [50 CLICS] //
+                    </p>
+                    <div style="font-size: 0.8rem; color: #888; margin-bottom: 10px;">
+                        PROGRESO: <strong id="mining-progress" style="color:#00ffcc;">0</strong> / 50
+                    </div>
+                    
+                    <!-- Gatillo interactivo del Clicker (Caja de impacto de partículas) -->
+                    <div id="mining-interactive-area" style="position: relative; display: inline-block;">
+                        <img src="{{ url_for('static', filename='imagenes/juegos/lobo_pixel_art_clicker_nosotros.webp') }}" class="sc-mining-target" id="mining-target" alt="Shirry Clicker Core">
+                    </div>
+
+                    <!-- RECEPTÁCULO DEL CÓDIGO PREMIO SECRETISIMO -->
+                    <div class="sc-reward-card" id="reward-box">
+                        <h2 style="font-size: 0.85rem; color: #00ffcc; letter-spacing: 1px; margin: 0; text-transform: uppercase;">
+                            ✓ TRANSMISIÓN_DECRIPTADA
+                        </h2>
+                        <div class="sc-promo-code">SHIRRYCORE15</div>
+                        <p style="color: #444; font-size: 0.65rem; margin: 0; line-height: 1.3;">
+                            // 15% DESCUENTO LIBERADO EN TU BOLSA //
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COLUMNA DERECHA: MARCO VISUAL DEL DROP (55%) -->
+        <div class="sc-nosotros-visual-block">
+            <div class="sc-visual-frame">
+                <img src="{{ url_for('static', filename='imagenes/campanas/modelo_cigarro_nosotros.webp') }}" class="sc-nosotros-img" alt="Shirry Core Manifiesto Visual">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ==========================================================================
+   LOGIC MOTOR: SISTEMA DE DETECCIÓN DE HUEVO DE PASCUA Y CLICKER ASÍNCRONO
+   ========================================================================== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Selectores del Huevo de Pascua
+    const secretTrigger = document.getElementById('secret-trigger');
+    const hiddenGameZone = document.getElementById('sc-hidden-clicker-zone');
+    const terminalBox = document.getElementById('sc-terminal-box');
+    
+    // Selectores del Motor Clicker
+    const miningTarget = document.getElementById('mining-target');
+    const progressDisplay = document.getElementById('mining-progress');
+    const interactiveArea = document.getElementById('mining-interactive-area');
+    const rewardBox = document.getElementById('reward-box');
+
+    let secretClicks = 0;
+    let gameClicks = 0;
+    const clicksToWin = 50; // Meta de clics optimizada
+    let isGameUnlocked = false;
+    let isGameActive = true;
+
+    const phrases = ['+1 DROP', '+1 CORE', 'HACK_IN', 'SYSTEM_UP', 'SHIRRY_MINING'];
+
+    // 1. ESCUCHADOR SECRETO: Abre el juego tras 5 clics seguidos en la primera línea de la terminal
+    if (secretTrigger) {
+        secretTrigger.addEventListener('click', () => {
+            if (isGameUnlocked) return;
+
+            secretClicks++;
+            
+            // Pequeño parpadeo rosa para avisar que está registrando el toque oculto
+            secretTrigger.style.color = '#ff0055';
+            setTimeout(() => { secretTrigger.style.color = '#ffffff'; }, 100);
+
+            if (secretClicks >= 5) {
+                isGameUnlocked = true;
+                secretTrigger.textContent = ">> ACCESO: SYSTEM_BREACH_DETECTED //";
+                secretTrigger.style.color = '#ff0055';
+                secretTrigger.style.cursor = 'default';
+                
+                // Despliega la zona del minijuego con la clase de CSS
+                hiddenGameZone.classList.add('revealed');
+                terminalBox.style.borderColor = '#ff0055'; // Borde de la consola en modo hackeo
+            }
+        });
+    }
+
+    // 2. MOTOR DEL JUEGO: Procesa los clics asíncronos y saca las partículas
+    if (miningTarget && interactiveArea) {
+        miningTarget.addEventListener('click', (e) => {
+            if (!isGameActive) return;
+
+            gameClicks++;
+            progressDisplay.textContent = gameClicks;
+
+            // CREACIÓN ASÍNCRONA DE PARTÍCULAS FLOTANTES CYBERPUNK
+            const particle = document.createElement('div');
+            particle.className = 'sc-click-particle';
+            particle.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+
+            // Coordenadas relativas al puntero dentro del marco de impacto
+            const rect = interactiveArea.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+
+            // Alternamos colores neón para los textos voladores
+            if (gameClicks % 2 === 0) {
+                particle.style.color = '#ff0055';
+                particle.style.textShadow = '0 0 6px #ff0055';
+            } else {
+                particle.style.textShadow = '0 0 6px #00ffcc';
+            }
+
+            interactiveArea.appendChild(particle);
+
+            setTimeout(() => { particle.remove(); }, 600);
+
+            // DETECTOR DE VICTORIA: DESBLOQUEO DEL PREMIO
+            if (gameClicks >= clicksToWin) {
+                isGameActive = false;
+                progressDisplay.style.color = '#00ffcc';
+                
+                // El lobo adopta un brillo neón cian permanente al ser hackeado
+                miningTarget.style.filter = 'drop-shadow(0 0 20px #00ffcc)';
+                miningTarget.style.cursor = 'default';
+                
+                // Se activa la tarjeta elástica del cupón de descuento
+                rewardBox.classList.add('active');
+                terminalBox.style.borderColor = '#00ffcc'; // Borde cian de hackeo exitoso completado
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

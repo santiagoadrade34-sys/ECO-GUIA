@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIRRY - ACCESO</title>
+    <!-- Llamado exclusivo a tu CSS externo -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <meta http-equiv="Accept-CH" content="Sec-CH-UA-Platform-Version, Sec-CH-UA-Model" />
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='imagenes/ui/logo-shirry.webp') }}" style="object-fit: contain; aspect-ratio: 1/1;"/>
+</head>
+
+<body class="login-page">
+
+    <div class="login-wrapper">
+        
+        <!-- Contenedor superior para los mensajes flash de Flask -->
+        <div class="flash-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="auth-alert">
+                    [{% if category == 'success' %}OK{% else %}ERROR{% endif %}] {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+        </div>
+
+        <h1 class="brand-header">
+            <!-- Corregido a 'inicio' para evitar el BuildError con tu app.py -->
+            <a href="{{ url_for('inicio') }}" class="brand-link">SHIRRY OFFICIAL</a>
+        </h1>
+
+        <!-- Contenedor Deslizante Principal -->
+        <div class="container" id="container">
+            
+            <!-- PANEL: REGISTRARSE -->
+
+            <div class="form-container sign-up-container">
+                <form id="form-register" action="{{ url_for('procesar_formulario') }}" method="POST">
+                    <h1>REGISTRARSE</h1>
+
+                <!-- FILA 1: INFORMACIÓN DE ACCESO -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>NOMBRE COMPLETO</label>
+                        <input type="text" name="nombre" placeholder="Tu Nombre" required autocomplete="off">
+                    </div>
+
+                <div class="form-group">
+                        <label>EMAIL</label>
+                        <input type="email" name="email" placeholder="tu@email.com" required autocomplete="off">
+                </div>
+            </div>
+
+            <!-- FILA 2: SEGURIDAD Y CONTACTO -->
+            <div class="form-row">
+                <div class="form-group" style="position: relative;">
+                    <label>CONTRASEÑA</label>
+                    <input type="password" id="txtContrasena" name="contrasena" placeholder="Crea una contraseña" required>
+                    <span id="btnTogglePassword" style="position: absolute; right: 12px; top: 50%; transform: translateY(-10%); cursor: pointer; font-size: 1.1rem; user-select: none;">👁️</span>
+                </div>
+
+
+                <div class="form-group">
+                    <label>TELÉFONO</label>
+                    <input type="tel" name="telefono" placeholder="Ej: 3165589976" required autocomplete="off">
+                </div>
+            </div>
+
+            <!-- FILA 3: DATOS GEOGRÁFICOS -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>FECHA DE NACIMIENTO</label>
+                    <input type="date" name="fecha_nacimiento" required>
+                </div>
+
+                <div class="form-group">
+                    <label>CIUDAD</label>
+                    <input type="text" name="ciudad" placeholder="Ej: Bogota" required autocomplete="off">
+                </div>
+            </div>
+
+            <!-- FILA 4: ENTREGA (BLOQUE ANCHO COMPLETO) -->
+            <div class="form-group form-group-full">
+                <label>DIRECCIÓN DE ENVÍO</label>
+                <input type="text" name="direccion" placeholder="Ej: CALLE 128 8 93 A 43" required autocomplete="off">
+            </div>
+
+            <button type="submit" class="btn-primary">REGISTRARME</button>
+        </form>
+    </div>
+
+
+            <!-- PANEL: INICIAR SESIÓN -->
+            <div class="form-container sign-in-container">
+                <form id="form-login" action="{{ url_for('procesar_login') }}" method="POST">
+                    <h1>INICIAR SESIÓN</h1>
+                    
+                    <div class="form-group">
+                        <label>EMAIL</label>
+                        <input type="email" name="email" placeholder="tu@email.com" required autocomplete="off">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>CONTRASEÑA</label>
+                        <!-- Envolvemos solo el input y el ojo en este contenedor relativo -->
+                        <div style="position: relative; width: 100%;">
+                            <input type="password" id="txtLoginContrasena" name="contrasena" placeholder="......" required style="width: 100%;">
+                            <span id="btnToggleLoginPassword" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.1rem; user-select: none;">👁️</span>
+                        </div>
+                    </div>
+
+
+                    
+                    <a href="{{ url_for('recuperar_vista') }}" class="form-link">¿OLVIDASTE TU CONTRASEÑA?</a>
+                    <button type="submit" class="btn-primary">ENTRAR</button>
+                </form>
+            </div>
+
+            <!-- PANELES OVERLAY INFORMATIVOS -->
+            <div class="overlay-container">
+                <div class="overlay">
+                    
+                    <div class="overlay-panel overlay-left">
+                        <div class="logo-container">
+                            <img src="{{ url_for('static', filename='imagenes/ui/logo-shirry.webp') }}" alt="SHIRRY" class="logo-img">
+                        </div>
+                        <h1>CONECTADO</h1>
+                        <p>Inicia sesión con tus credenciales para administrar tu perfil.</p>
+                        <button class="btn-ghost" id="signIn">IR AL LOGIN</button>
+                    </div>
+                    
+                    <div class="overlay-panel overlay-right">
+                        <div class="logo-container">
+                            <img src="{{ url_for('static', filename='imagenes/ui/logo_shirry_blanco.webp') }}" alt="SHIRRY" class="logo-img">
+                        </div>
+                        <h1>BIENVENIDO</h1>
+                        <p>Únete a la plataforma oficial y comienza tu experiencia con nosotros.</p>
+                        <button class="btn-ghost" id="signUp">REGISTRARSE</button>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Script JavaScript para transiciones -->
+    <script>
+
+    const signUpButton = document.getElementById('signUp');
+    const signInButton = document.getElementById('signIn');
+    const container = document.getElementById('container');
+
+    signUpButton.addEventListener('click', () => {
+        container.classList.add("right-panel-active");
+    });
+
+    signInButton.addEventListener('click', () => {
+        container.classList.remove("right-panel-active");
+    });
+
+
+
+    const btnTogglePassword = document.querySelector('#btnTogglePassword');
+    const txtContrasena = document.querySelector('#txtContrasena');
+
+    btnTogglePassword.addEventListener('click', function () {
+        // Cambia entre texto oculto y visible
+        const type = txtContrasena.getAttribute('type') === 'password' ? 'text' : 'password';
+        txtContrasena.setAttribute('type', type);
+        
+        // Cambia el emoji del ojo según el estado
+        this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
+
+
+    const btnToggleLoginPassword = document.querySelector('#btnToggleLoginPassword');
+    const txtLoginContrasena = document.querySelector('#txtLoginContrasena');
+
+    btnToggleLoginPassword.addEventListener('click', function () {
+        const type = txtLoginContrasena.getAttribute('type') === 'password' ? 'text' : 'password';
+        txtLoginContrasena.setAttribute('type', type);
+        this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,232 @@
+/* ==========================================================================
+   SHIRRY CORE - INTERFAZ DE MINIJUEGO CLICKER TERMINAL
+   ========================================================================== */
+.sc-clicker-wrapper {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: monospace;
+    color: #ffffff;
+    text-align: center;
+}
+
+.sc-clicker-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    border-left: 3px solid #ff0055;
+    display: inline-block;
+    padding-left: 15px;
+}
+
+/* Panel de control de estadísticas */
+.sc-clicker-panel {
+    background: #050505;
+    border: 1px solid #111111;
+    padding: 20px;
+    border-radius: 4px;
+    max-width: 400px;
+    margin: 0 auto 4px auto;
+    display: flex;
+    justify-content: space-around;
+    box-sizing: border-box;
+}
+
+.sc-stat-box {
+    font-size: 0.9rem;
+    color: #aaaaaa;
+}
+
+.sc-stat-box span {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #00ffcc;
+    margin-top: 5px;
+}
+
+/* ÁREA DE MINADO DEL LOGO COMPACTO */
+.sc-clicker-zone {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin: 40px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sc-clicker-target {
+    width: 180px;
+    height: 180px;
+    cursor: pointer;
+    filter: drop-shadow(0 0 10px #ff0055);
+    transition: transform 0.05s ease-in-out, filter 0.2s;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Efecto de impacto visual al presionar con el ratón */
+.sc-clicker-target:active {
+    transform: scale(0.92);
+    filter: drop-shadow(0 0 25px #00ffcc);
+}
+
+/* Partículas flotantes que saldrán disparadas con cada clic */
+.sc-click-particle {
+    position: absolute;
+    color: #00ffcc;
+    font-size: 0.8rem;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 9999;
+    animation: flyUpAndOut 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes flyUpAndOut {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translateY(-60px) scale(0.7);
+    }
+}
+
+/* TARJETA DEL PREMIO SECRETO DESBLOQUEADO */
+.sc-reward-card {
+    background: #000000;
+    border: 1px dashed #00ffcc;
+    padding: 25px;
+    border-radius: 4px;
+    max-width: 450px;
+    margin: 30px auto 0 auto;
+    box-shadow: 0 0 30px rgba(0, 255, 204, 0.15);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: none;
+}
+
+.sc-reward-card.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sc-promo-code {
+    background: #0d0d0d;
+    border: 1px solid #ff0055;
+    color: #ff0055;
+    font-size: 1.4rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    padding: 12px;
+    margin: 15px 0;
+    text-transform: uppercase;
+}
+
+
+/* ==========================================================================
+   SHIRRY CORE - REGLAS INTERACTIVAS DEL CLICKER OCULTO
+   ========================================================================== */
+
+/* Línea de activación secreta con cursor de celda */
+.sc-secret-trigger {
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s;
+}
+.sc-secret-trigger:hover {
+    color: #ff0055 !important; /* Pista visual sutil al pasar el mouse */
+}
+
+/* El contenedor del juego que nacerá escondido */
+#sc-hidden-clicker-zone {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    margin-top: 25px;
+    border-top: 1px dashed #222;
+    padding-top: 20px;
+    text-align: center;
+}
+
+#sc-hidden-clicker-zone.revealed {
+    display: block !important;
+    opacity: 1 !important;
+}
+
+/* El blanco del hackeo: El logo del lobo a minar */
+.sc-mining-target {
+    width: 120px;
+    height: 120px;
+    margin: 20px auto;
+    cursor: pointer;
+    filter: drop-shadow(0 0 8px #ff0055);
+    transition: transform 0.05s ease-in-out, filter 0.2s;
+    user-select: none;
+}
+
+.sc-mining-target:active {
+    transform: scale(0.92);
+    filter: drop-shadow(0 0 20px #00ffcc);
+}
+
+/* Partículas de hackeo flotantes */
+.sc-click-particle {
+    position: absolute;
+    color: #00ffcc;
+    font-size: 0.75rem;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 9999;
+    animation: flyUpAndOut 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes flyUpAndOut {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translateY(-50px) scale(0.7);
+    }
+}
+
+/* Tarjeta elástica del código de descuento */
+.sc-reward-card {
+    background: #000000;
+    border: 1px dashed #00ffcc;
+    padding: 20px;
+    border-radius: 4px;
+    margin-top: 20px;
+    box-shadow: 0 0 25px rgba(0, 255, 204, 0.15);
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: none;
+}
+
+.sc-reward-card.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sc-promo-code {
+    background: #0d0d0d;
+    border: 1px solid #ff0055;
+    color: #ff0055;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    padding: 10px;
+    margin: 12px 0;
+    text-transform: uppercase;
+    text-align: center;
+}

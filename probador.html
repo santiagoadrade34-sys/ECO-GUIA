@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<!-- Vinculamos el CSS exclusivo del probador que pondremos abajo -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/probador.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="fitting-room-wrapper">
+    
+    <!-- TÍTULO DE LA SECCIÓN ESTILO SHIRRY CORE -->
+    <div class="fitting-header">
+        <h1>PROBADOR VIRTUAL</h1>
+        <p>// CONFIGURA TU ARMADURA URBANA IN SITU</p>
+    </div>
+
+    <div class="fitting-main-container">
+        
+        <!-- 🕶️ COLUMNA IZQUIERDA: EL ESCENARIO (EL AVATAR Y LAS CAPAS DE ROPA) -->
+        <div class="fitting-stage-container">
+            <div class="fitting-stage">
+                
+                <!-- Capa 0: El maniquí/avatar base invisible/visible de fondo -->
+                <img src="{{ url_for('static', filename='imagenes/probador/avatar_base.png') }}" class="layer-item layer-avatar" alt="Avatar Base">
+                
+                <!-- Capa 1: Ropa Superior (Camisetas, Hoodies, Chaquetas) -->
+                <img src="" id="layer-top" class="layer-item layer-cloth" alt="Capa Superior">
+                
+                <!-- Capa 2: Ropa Inferior (Pantalones, Cargo Jeans, Shorts) -->
+                <img src="" id="layer-bottom" class="layer-item layer-cloth" alt="Capa Inferior">
+                
+                <!-- Capa 3: Calzado (Zapatillas, Botas Industriales) -->
+                <img src="" id="layer-shoes" class="layer-item layer-cloth" alt="Calzado">
+
+            </div>
+            
+            <!-- Botón para resetear y desvestir al avatar de golpe -->
+            <button id="btn-reset-avatar" class="btn-cyber-reset">RESETEAR AVATAR</button>
+        </div>
+
+        <!-- 🎛️ COLUMNA DERECHA: EL RACK DE ROPA INTERACTIVO (CONTROLES) -->
+        <div class="fitting-rack-container">
+            
+            <!-- PESTAÑAS DE CATEGORÍAS -->
+            <div class="rack-tabs">
+                <button class="tab-trigger active" data-tab="tops">PRENDAS SUPERIORES</button>
+                <button class="tab-trigger" data-tab="bottoms">PANTALONES</button>
+                <button class="tab-trigger" data-tab="shoes">CALZADO</button>
+            </div>
+
+            <!-- CONTENIDO DE LAS PESTAÑAS (RACK DE PRENDAS) -->
+            <div class="rack-content-panels">
+                
+                <!-- Panel 1: Partes Superiores -->
+                <div class="rack-panel active" id="panel-tops">
+                    <div class="rack-grid">
+                        <!-- Cada tarjeta tiene la ruta al PNG transparente correspondiente al modelo -->
+                        <div class="rack-item-card" data-layer="top" data-img-src="{{ url_for('static', filename='imagenes/productos/camisa_transparent.png') }}">
+                            <div class="rack-img-mini">
+                                <img src="{{ url_for('static', filename='imagenes/productos/camisa_mini.png') }}" alt="Camisa">
+                            </div>
+                            <h3>CAMISA OVERSIZE #01</h3>
+                        </div>
+                        <div class="rack-item-card" data-layer="top" data-img-src="{{ url_for('static', filename='imagenes/productos/hoodie_transparent.png') }}">
+                            <div class="rack-img-mini">
+                                <img src="{{ url_for('static', filename='imagenes/productos/hoodie_mini.png') }}" alt="Hoodie">
+                            </div>
+                            <h3>HOODIE CYBERPUNK</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 2: Pantalones -->
+                <div class="rack-panel" id="panel-bottoms">
+                    <div class="rack-grid">
+                        <div class="rack-item-card" data-layer="bottom" data-img-src="{{ url_for('static', filename='imagenes/productos/jean_transparent.png') }}">
+                            <div class="rack-img-mini">
+                                <img src="{{ url_for('static', filename='imagenes/productos/jean_mini.png') }}" alt="Jean">
+                            </div>
+                            <h3>JEAN WIDE LEG #02</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 3: Calzado -->
+                <div class="rack-panel" id="panel-shoes">
+                    <div class="rack-grid">
+                        <div class="rack-item-card" data-layer="shoes" data-img-src="{{ url_for('static', filename='imagenes/productos/zapas_transparent.png') }}">
+                            <div class="rack-img-mini">
+                                <img src="{{ url_for('static', filename='imagenes/productos/zapas_mini.png') }}" alt="Zapatillas">
+                            </div>
+                            <h3>BOTAS INDUSTRIALES BLACK</h3>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- 🚀 SCRIPT INTEGRADO EN LÍNEA PARA CONTROLAR EL CAMBIO EN TIEMPO REAL -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const tabs = document.querySelectorAll(".tab-trigger");
+    const panels = document.querySelectorAll(".rack-panel");
+    const rackCards = document.querySelectorAll(".rack-item-card");
+    const resetBtn = document.getElementById("btn-reset-avatar");
+
+    // 1. 🎛️ CONTROL DE LAS PESTAÑAS (TABS)
+    tabs.forEach(tab => {
+        tab.addEventListener("click", function () {
+            tabs.forEach(t => t.classList.remove("active"));
+            panels.forEach(p => p.classList.remove("active"));
+
+            this.classList.add("active");
+            const targetPanel = document.getElementById("panel-" + this.getAttribute("data-tab"));
+            if (targetPanel) targetPanel.classList.add("active");
+        });
+    });
+
+    // 2. 👗 LÓGICA INTERACTIVA DEL PROBADOR (ENCIMAR ROPA)
+    rackCards.forEach(card => {
+        card.addEventListener("click", function () {
+            const capaDestino = this.getAttribute("data-layer"); // 'top', 'bottom', o 'shoes'
+            const rutaImagenPng = this.getAttribute("data-img-src"); // La ruta a la prenda recortada
+            
+            // Seleccionamos la etiqueta <img> de la capa en el escenario
+            const targetLayerImg = document.getElementById("layer-" + capaDestino);
+            
+            if (targetLayerImg) {
+                // Si la prenda cliqueada ya está puesta, la quitamos (desvestir)
+                if (targetLayerImg.src.includes(rutaImagenPng) && targetLayerImg.style.display === "block") {
+                    targetLayerImg.src = "";
+                    targetLayerImg.style.display = "none";
+                    this.classList.remove("selected");
+                } else {
+                    // Si no está puesta, removemos la selección de las del mismo tipo y ponemos la nueva
+                    document.querySelectorAll(`.rack-item-card[data-layer="${capaDestino}"]`).forEach(c => c.classList.remove("selected"));
+                    
+                    targetLayerImg.src = rutaImagenPng;
+                    targetLayerImg.style.display = "block"; // Encendemos la capa
+                    this.classList.add("selected");
+                }
+            }
+        });
+    });
+
+    // 3. 🔄 BOTÓN RESETEAR: Quita todas las prendas de golpe
+    if (resetBtn) {
+        resetBtn.addEventListener("click", function () {
+            document.querySelectorAll(".layer-cloth").forEach(img => {
+                img.src = "";
+                img.style.display = "none";
+            });
+            rackCards.forEach(c => c.classList.remove("selected"));
+        });
+    }
+});
+</script>
+{% endblock %}

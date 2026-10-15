@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Vincular el archivo CSS independiente exclusivo de la ficha -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/product_detail.css') }}">
+
+<!-- Migas de pan compactas Cyberpunk -->
+<div class="breadcrumbs" style="font-size: 0.7rem; color: #555555; max-width: 1200px; margin: 20px auto 0; padding: 0 20px; text-transform: uppercase; letter-spacing: 1px; font-family: monospace;">
+    <a href="/shop" style="color: #999999; text-decoration: none;">Página principal</a> / 
+    <a href="/shop?cat={{ producto['categoria'] }}" style="color: #999999; text-decoration: none;">{{ producto['categoria'] }}</a> / 
+    <span>{{ producto['nombre'] }}</span>
+</div>
+
+<section class="product-detail-section">
+    
+    <!-- 1. Carrusel de Miniaturas Verticales Corregido -->
+<div class="detail-thumbs-col">
+    <div class="detail-thumb-item active" data-path="{{ url_for('static', filename='imagenes/productos/' ~ producto['imagen']) }}" onclick="refrescarVistaFicha(this.dataset.path, this)">
+        <img src="{{ url_for('static', filename='imagenes/productos/' ~ producto['imagen']) }}" alt="{{ producto['nombre'] }}">
+    </div>
+    <div class="detail-thumb-item" data-path="{{ url_for('static', filename='imagenes/productos/' ~ producto['imagen']) }}" onclick="refrescarVistaFicha(this.dataset.path, this)">
+        <img src="{{ url_for('static', filename='imagenes/productos/' ~ producto['imagen']) }}" alt="{{ producto['nombre'] }}" style="opacity: 0.3;">
+    </div>
+</div>
+
+
+
+    <!-- 2. Ventana de Escenario Central -->
+    <div class="detail-main-stage">
+        <img id="detail_stage_target" src="{{ url_for('static', filename='imagenes/productos/' ~ producto['imagen']) }}" alt="{{ producto['nombre'] }}">
+    </div>
+
+    <!-- 3. Formulario Transaccional y Parámetros -->
+    <div class="detail-control-panel">
+        <form action="{{ url_for('agregar_al_carrito') }}" method="POST">
+            <input type="hidden" name="id_producto" value="{{ producto['id'] }}">
+            <input type="hidden" name="talla" id="ficha_talla_input" value="M">
+
+            <div class="detail-header-flex">
+                <h1 class="detail-title-text">{{ producto['nombre'] }}</h1>
+                <span class="detail-price-text">$ {{ "{:,.0f}".format(producto['precio'] | float) }}</span>
+            </div>
+            
+            <div class="detail-sku-label">ID PRODUCTO: #{{ producto['id'] }}</div>
+
+            <!-- Botones de Talla Cuadrados Streetwear -->
+            <div class="detail-section-title">Talla</div>
+            <div class="detail-size-flex">
+                <button type="button" class="detail-size-btn" onclick="mapearControlTalla(this, 'S')">S</button>
+                <button type="button" class="detail-size-btn active" onclick="mapearControlTalla(this, 'M')">M</button>
+                <button type="button" class="detail-size-btn" onclick="mapearControlTalla(this, 'L')">L</button>
+                <button type="button" class="detail-size-btn" onclick="mapearControlTalla(this, 'XL')">XL</button>
+            </div>
+
+            <!-- Selector de Volumen Numérico -->
+            <div class="detail-section-title">Cantidad</div>
+            <div class="detail-qty-box">
+                <button type="button" class="detail-qty-control" onclick="mapearControlCantidad(-1)">-</button>
+                <input type="number" name="cantidad" id="ficha_qty_display" class="detail-qty-input" value="1" min="1" readonly>
+                <button type="button" class="detail-qty-control" onclick="mapearControlCantidad(1)">+</button>
+            </div>
+
+            <button type="submit" class="detail-submit-btn">Añadir al Carrito</button>
+        </form>
+
+        <a href="#" class="detail-meta-anchor">→ Ver Guía de Tallas</a>
+
+        <!-- Bloques Desplegables de Información -->
+        <div class="detail-accordion" onclick="conmutarAcordeonFicha(this)">
+            <div class="detail-accordion-head">Descripción <span>+</span></div>
+            <div class="detail-accordion-body">
+                Prenda de alta costura y confección urbana exclusiva. Pieza indexada en la división de <strong>{{ producto['categoria'] | upper }}</strong> bajo los estándares técnicos de producción del drop permanente <strong>{{ producto['coleccion'] | upper }}</strong> de Shirry Studios.
+            </div>
+        </div>
+
+        <div class="detail-accordion" onclick="conmutarAcordeonFicha(this)">
+            <div class="detail-accordion-head">Condiciones de Lavado <span>+</span></div>
+            <div class="detail-accordion-body">
+                Lavar a mano o en ciclo delicado utilizando agua fría. Evitar el uso de blanqueadores químicos o secado térmico agresivo en máquina para preservar las propiedades de las fibras textiles.
+            </div>
+        </div>
+
+        <div class="detail-accordion" onclick="conmutarAcordeonFicha(this)">
+            <div class="detail-accordion-head">Envío y Logística <span>+</span></div>
+            <div class="detail-accordion-body">
+                Distribución inmediata respaldada a nivel nacional en toda Colombia. Despacho permanente coordinado a través del inventario centralizado en Laragon.
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    function refrescarVistaFicha(ruta, elemento) {
+        document.getElementById('detail_stage_target').src = ruta;
+        document.querySelectorAll('.detail-thumb-item').forEach(box => box.classList.remove('active'));
+        elemento.classList.add('active');
+    }
+
+    function mapearControlTalla(boton, tallaValor) {
+        document.querySelectorAll('.detail-size-btn').forEach(btn => btn.classList.remove('active'));
+        boton.classList.add('active');
+        document.getElementById('ficha_talla_input').value = tallaValor;
+    }
+
+    function mapearControlCantidad(valor) {
+        const input = document.getElementById('ficha_qty_display');
+        let actual = parseInt(input.value) + valor;
+        if (actual < 1) actual = 1;
+        input.value = actual;
+    }
+
+    function conmutarAcordeonFicha(elemento) {
+        elemento.classList.toggle('open');
+        const signo = elemento.querySelector('.detail-accordion-head span');
+        signo.textContent = elemento.classList.contains('open') ? '-' : '+';
+    }
+</script>
+{% endblock %}

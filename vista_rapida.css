@@ -1,0 +1,225 @@
+/* ==========================================================================
+   SHIRRY - TERMINAL VISTA RÁPIDA (QUICK VIEW MODAL)
+   ========================================================================== */
+
+/* Fondo oscuro translúcido que cubre la web */
+.qv-modal-overlay {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.qv-modal-overlay.active {
+    display: flex !important;
+}
+
+/* Tarjeta contenedora de dos columnas */
+.qv-card {
+    background: #0d0d0d;
+    border: 3px solid #ff0055; /* Hilo fucsia neón de SHIRRY */
+    width: 90%;
+    max-width: 850px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    font-family: 'Courier New', monospace;
+    box-shadow: 0 0 30px rgba(255, 0, 85, 0.2);
+    animation: qvBoot 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* Columna Izquierda: Galería e Imagen Principal */
+.qv-gallery-side {
+    display: flex;
+    background: #111111;
+    padding: 20px;
+    gap: 15px;
+    border-right: 3px solid #111111;
+}
+
+.qv-thumbnails {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.qv-thumb-img {
+    width: 50px;
+    height: 65px;
+    object-fit: cover;
+    border: 2px solid #222222;
+    cursor: pointer;
+}
+
+.qv-thumb-img.active, .qv-thumb-img:hover {
+    border-color: #ff0055;
+}
+
+.qv-main-display {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.qv-main-img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border: 2px solid #222222;
+}
+
+/* Columna Derecha: Datos Técnicos */
+.qv-info-side {
+    padding: 35px 25px;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+.qv-title {
+    font-size: 20px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin: 0 0 5px 0;
+    letter-spacing: 1px;
+}
+
+.qv-sku {
+    color: #555555;
+    font-size: 11px;
+    margin-bottom: 20px;
+}
+
+.qv-price {
+    font-size: 26px;
+    color: #ff0055; /* Precio fucsia neón */
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+/* Selectores de Talla Brutalistas */
+.qv-tallas-title {
+    font-size: 13px;
+    color: #aaaaaa;
+    margin-bottom: 10px;
+}
+
+.qv-tallas-grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 35px;
+}
+
+.qv-size-btn {
+    background: #111111;
+    border: 2px solid #333333;
+    color: #ffffff;
+    padding: 8px 15px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.qv-size-btn:hover, .qv-size-btn.active {
+    border-color: #ff0055;
+    color: #ff0055;
+}
+
+/* Botón de Cierre de Terminal */
+.qv-close-btn {
+    position: absolute;
+    top: 15px; right: 15px;
+    background: transparent;
+    border: none;
+    color: #666666;
+    font-size: 22px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.qv-close-btn:hover { color: #ff0055; }
+
+@keyframes qvBoot {
+    0% { opacity: 0; transform: scale(0.96); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+
+/* ==========================================================================
+   SHIRRY CATALOG - ADAPTACIÓN DEL BOTÓN DE OJO EN LA TARJETA
+   ========================================================================== */
+
+.btn-quickview {
+    background: transparent;
+    border: 2px solid #222222 !important;
+    color: #ffffff !important;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+/* Efecto hover con el fucsia oficial de SHIRRY */
+.btn-quickview:hover {
+    border-color: #ff0055 !important;
+    color: #ff0055 !important;
+    box-shadow: 0 0 12px #ff0055;
+    background-color: #000000;
+}
+
+/* ==========================================================================
+   SHIRRY - ANCLAJE MÁSTER DE VISTA RÁPIDA (CONEXIÓN CON TU CSS REAL)
+   ========================================================================== */
+
+/* 1. ESTRUCTURACIÓN DE LA PÍLDORA BLANCA CENTRADA */
+.btn-quickview-temu {
+    position: absolute;
+    bottom: 25px; /* Se clava de forma impecable en la parte inferior del contenedor radial */
+    left: 50% !important;
+    transform: translateX(-50%) translateY(10px) !important; /* Centrado matemático y ligera caída */
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    white-space: nowrap !important; 
+    width: auto !important;
+    
+    /* Oculto por defecto con transición suave */
+    opacity: 0;
+    transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* 2. EFECTO HOVER CONECTADO A TU CONTENEDOR REAL */
+/* Cuando pasas el cursor sobre el contenedor de la imagen, el botón se activa y sube al sitio exacto */
+.shirry-img-container:hover .btn-quickview-temu {
+    opacity: 1 !important;
+    transform: translateX(-50%) translateY(0) !important;
+}
+
+/* 3. EFECTO HOVER DIRECTO EN EL BOTÓN BLANCO */
+.btn-quickview-temu:hover {
+    background: #f5f5f5 !important;
+    box-shadow: 0 0 15px #ff0055 !important; /* Destello fucsia oficial de tu marca */
+}

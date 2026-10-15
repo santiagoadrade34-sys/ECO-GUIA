@@ -1,0 +1,439 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- PANTALÓN DE CARGA CYBERPUNK (DURACIÓN ULTRA RÁPIDA) -->
+<div id="shirry-loader">
+    <div class="loader-content">
+        <div class="loader-brand">SHIRRY</div>
+        <div class="loader-terminal">// INICIALIZANDO EMISIÓN_DROPS_2026...</div>
+        <div class="loader-bar"><div class="loader-progress"></div></div>
+    </div>
+</div>
+
+
+<!-- ========================================================================== -->
+<!-- CONTENEDOR PRINCIPAL DE LA PÁGINA DE INICIO                                -->
+<!-- ========================================================================== -->
+<div class="index-container">
+
+        <!-- 🚀 MENÚ DE CATEGORÍAS EXCLUSIVO DEL INICIO -->
+    <div class="sub-navbar-menu">
+        <a href="/" class="sub-menu-link active">INICIO</a>
+        <a href="/nuevo" class="sub-menu-link">NUEVO</a>
+        <a href="/ropa" class="sub-menu-link">ROPA</a>
+        <a href="/accesorios" class="sub-menu-link">ACCESORIOS</a>
+        <a href="/colecciones" class="sub-menu-link">COLECCIONES</a>
+        <a href="/sale" class="sub-menu-link">SALE</a>
+    </div>
+
+
+<!-- 🚀 UN SOLO BLOQUE UNIFICADO DE PORTADA -->
+<section class="hero-main-container">
+
+    <!-- 🚀 ONDAS LÍQUIDAS VECTORIALES DINÁMICAS (DE FONDO) -->
+    <div class="hero-wave-background">
+        <!-- Onda Capa 1 -->
+        <svg class="wave-svg wave-1" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path fill="rgba(138, 43, 226, 0.25)" d="M0,192L48,197.3C96,203,192,213,288,197.3C384,181,480,139,576,144C672,149,768,203,864,208C960,213,1056,171,1152,144C1248,117,1344,139,1392,149.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+        <!-- Onda Capa 2 -->
+        <svg class="wave-svg wave-2" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path fill="rgba(168, 85, 247, 0.15)" d="M0,96L60,112C120,128,240,160,360,160C480,160,600,128,720,138.7C840,149,960,203,1080,208C1200,213,1320,171,1380,149.3L1440,128L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+        </svg>
+    </div>
+
+    <!-- El resto de tus bloques (hero-content-wrapper, carousel-container) se quedan exactamente igual abajo... -->
+    
+    <!-- Bloque de textos dinámicos (Izquierda) -->
+    <div class="hero-content-wrapper">
+        
+        <!-- 📝 TEXTO 01 (Para la modelo de la Lupa) -->
+        <div class="hero-text-slide active">
+            <span class="hero-subtitle">NUEVAS COLECCIONES</span>
+            <h1 class="hero-title">EXPRESA QUIÉN ERES<br>VISTE TU ACTITUD</h1>
+        </div>
+
+        <!-- 📝 TEXTO 02 (Para el modelo Negro) -->
+        <div class="hero-text-slide">
+            <span class="hero-subtitle">SHIRRY TECHWEAR</span>
+            <h1 class="hero-title">ESTILO INDUSTRIAL<br>DISEÑO URBANO</h1>
+        </div>
+
+        <!-- 📝 TEXTO 03 (Para la modelo Asiática de Rojo) -->
+        <div class="hero-text-slide">
+            <span class="hero-subtitle">EDICIÓN LIMITADA</span>
+            <h1 class="hero-title">VANGUARDIA PURA<br>ROMPE LAS REGLAS</h1>
+        </div>
+
+        <!-- El botón único se queda fijo abajo de los textos -->
+        <a href="#catalogo" class="btn-comprar-now">COMPRAR AHORA <span class="arrow">→</span></a>
+    </div>
+
+
+    <!-- Carrusel de imágenes que flota a la derecha -->
+    <div class="carousel-container">
+        <div class="carousel-slide">
+            <img src="{{ url_for('static', filename='/imagenes/campanas/modelo_mujer_lupa_inicio.webp') }}" alt="SHIRRY NEW CORE 01" class="campaign-img">
+            <img src="{{ url_for('static', filename='/imagenes/campanas/modelo_negro_inicio.webp') }}" alt="SHIRRY NEW CORE 02" class="campaign-img">
+            <img src="{{ url_for('static', filename='/imagenes/campanas/modelo_asiatica_rojo_inicio.webp') }}" alt="SHIRRY NEW CORE 03" class="campaign-img">
+        </div>
+    </div>
+
+    <!-- 🚀 CONTROLES NUMÉRICOS INFERIORES -->
+     <div class="carousel-indicators">
+            <span class="indicator-num active">01</span>
+            <span class="indicator-num">02</span>
+            <span class="indicator-num">03</span>
+        </div>
+    </div>
+
+        <!-- 🚀 NUEVOS BOTONES DE CONTROL DE FLECHAS FLOTANTES -->
+    <button class="carousel-nav-btn prev-btn" id="hero-prev" aria-label="Anterior">‹</button>
+    <button class="carousel-nav-btn next-btn" id="hero-next" aria-label="Siguiente">›</button>
+
+<!-- 🚀 BARRA DE BENEFICIOS INFERIOR CON VECTORES SVG LOCALES DE ALTA VELOCIDAD -->
+<div class="benefits-infobar">
+    <div class="benefit-item">
+        <!-- Icono de Camión -->
+        <svg class="benefit-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="11" width="13" height="8" rx="2"/>
+            <path d="M15 11h4l3 4v4h-7v-8z"/>
+            <circle cx="6" cy="19" r="2"/>
+            <circle cx="18" cy="19" r="2"/>
+        </svg>
+        <div class="benefit-text">
+            <h3>ENVÍOS A TODO EL PAÍS</h3>
+            <p>Rápidos y seguros</p>
+        </div>
+    </div>
+    
+    <div class="benefit-item">
+        <!-- Icono de Flechas de Cambio -->
+        <svg class="benefit-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M20 18H4M4 18l4-4M4 18l4 4M4 6h16M20 6l-4-4M20 6l-4 4"/>
+        </svg>
+        <div class="benefit-text">
+            <h3>CAMBIOS Y DEVOLUCIONES</h3>
+            <p>Hasta 30 días</p>
+        </div>
+    </div>
+    
+    <div class="benefit-item">
+        <!-- Icono de Candado Seguro -->
+        <svg class="benefit-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="5" y="11" width="14" height="10" rx="2"/>
+            <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+        </svg>
+        <div class="benefit-text">
+            <h3>PAGO SEGURO</h3>
+            <p>Protegemos tu información</p>
+        </div>
+    </div>
+    
+    <div class="benefit-item">
+        <!-- Icono de Estrella de Calidad -->
+        <svg class="benefit-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+        <div class="benefit-text">
+            <h3>CALIDAD PREMIUM</h3>
+            <p>Selección 100% original</p>
+        </div>
+    </div>
+</div>
+
+
+
+</section>
+
+
+
+<!-- ========================================================================== -->
+<!-- SECCIÓN: CATÁLOGO ASIMÉTRICO ESTILO CANNABIS / STREETWEAR (PARTE 1)        -->
+<!-- ========================================================================== -->
+<section class="cannabis-catalog-section">
+    <div class="cannabis-grid-container">
+
+        <!-- Categoría 1: Camisas / Tops (Grande a la izquierda) -->
+        <a href="{{ url_for('shop', cat='camisetas') }}" class="category-grid-item item-puffer" style="text-decoration: none; display: block;">
+            <div class="category-text-back">CAMISAS</div>
+            <img src="{{ url_for('static', filename='imagenes/campanas/modelo_camiseta_inicio.webp') }}" alt="Jackets Drop" class="category-model-img">
+        </a>
+
+        <!-- Categoría 2: Calzado (Mediano arriba a la derecha) -->
+        <a href="{{ url_for('shop', cat='calzado') }}" class="category-grid-item item-hoodie" style="text-decoration: none; display: block;">
+            <div class="category-text-back">CALZADO</div>
+            <img src="{{ url_for('static', filename='imagenes/campanas/modelo_zapatilla_inicio.webp') }}" alt="Hoodies Drop" class="category-model-img">
+        </a>
+
+        <!-- Categoría 3: Accesorios (Largo arriba a la extrema derecha) -->
+        <a href="{{ url_for('shop', cat='accesorios') }}" class="category-grid-item item-pants" style="text-decoration: none; display: block;">
+            <div class="category-text-back">ACCESORIOS</div>
+            <img src="{{ url_for('static', filename='imagenes/campanas/mano_accesorios_inicio.webp') }}" alt="Pants Drop" class="category-model-img">
+        </a>
+        <!-- Categoría 4: Pantalones (Abajo a la izquierda en la segunda fila) -->
+        <a href="{{ url_for('shop', cat='pantalones') }}" class="category-grid-item item-tees" style="text-decoration: none; display: block;">
+            <div class="category-text-back">PANTALONES</div>
+            <img src="{{ url_for('static', filename='imagenes/campanas/modelo_pantalones_inicio.webp') }}" alt="Tees Drop" class="category-model-img">
+        </a>
+
+        <!-- Categoría 5: Blusas / Accesorios Extra (Abajo a la derecha) -->
+        <a href="{{ url_for('shop', cat='chaquetas') }}" class="category-grid-item item-drop-extra" style="text-decoration: none; display: block;">
+            <div class="category-text-back">BLUSAS</div>
+            <img src="{{ url_for('static', filename='imagenes/campanas/modelo_blusa_inicio.webp') }}" alt="Extra Drop" class="category-model-img">
+        </a>
+
+    </div> <!-- Cierre de cannabis-grid-container -->
+</section> <!-- Cierre de cannabis-catalog-section -->
+
+
+    <!-- ========================================================================== -->
+    <!-- 2. SECCIÓN DE PRODUCTOS (TU GRILLA DE CATÁLOGO TERMINAL DINÁMICA)           -->
+    <!-- ========================================================================== -->
+    <hr>
+    <hr>
+
+    <!-- SECCIÓN: NUEVAS COLECCIONES (DISEÑO ORIGINAL RESTAURADO Y CONECTADO) -->
+    <section class="banner">
+        <a href="{{ url_for('coleccion_nueva') }}">
+            <!-- Imagen principal del Banner -->
+            <img src="{{ url_for('static', filename='imagenes/campanas/foto_modelos_cayendo_inicio.webp') }}" alt="Banner animado con la nueva colección de ropa SHIRRY">
+            
+            <!-- Contenedor del texto -->
+            <section class="banner-texto">
+                <h2>NUEVAS COLECCIONES</h2>
+            </section>
+        </a>
+    </section>
+
+    <hr>
+    <hr>
+
+    <!-- CONTENEDOR CON DESPLAZAMIENTO HORIZONTAL LATERAL DINÁMICO -->
+    <div class="horizontal-scroll-container">
+
+        <!-- 🔥 RESTAURADO: Dejamos productos_nuevos para conectar con tu Python actual -->
+        {% for producto in productos_nuevos %}
+        <!-- TARJETA DINÁMICA CONECTADA A MYSQL (SINCRO MAESTRA) -->
+        <div class="product-card-scroll">
+            <div class="product-media-wrapper">
+                <div class="product-meta-top">
+                    <span class="meta-serial">EUTANASIA // #{{ producto['id'] }}</span>
+                    <span class="meta-category">{{ producto['categoria'] | upper if producto['categoria'] else "PRENDA" }}</span>
+                </div>
+                
+                <!-- 🔥 ENLACE UNIFICADO: Apunta a tu ruta de Python con corchetes limpios sin error 404 -->
+                <a href="/shop/product/{{ producto['id'] }}" style="text-decoration: none; display: block; width: 100%;">
+                    {% if producto['imagen'] %}
+                        <!-- 🔥 CAMBIADO: Buscamos la columna 'imagen' real con centrado automático horizontal -->
+                        <img src="{{ url_for('static', filename='imagenes/productos/' ~ producto['imagen']) }}" 
+                             alt="Prenda" 
+                             class="product-img-center" 
+                             style="display: block; margin: 0 auto; max-width: 90%; height: auto; max-height: 280px; object-fit: contain; padding-top: 15px;">
+                    {% else %}
+                        <img src="https://placeholder.com" 
+                             alt="Prenda" 
+                             class="product-img-center" 
+                             style="display: block; margin: 0 auto; max-width: 90%; height: auto; max-height: 280px; object-fit: contain; padding-top: 15px;">
+                    {% endif %}
+                </a>
+            </div>
+
+            <div class="product-info-bottom">
+                <!-- Enlace unificado en las letras del título -->
+                <a href="/shop/product/{{ producto['id'] }}" style="text-decoration: none; color: inherit;">
+                    <h3 class="product-name-cursive">{{ producto['nombre'] | upper if producto['nombre'] else "PRENDA" }}</h3>
+                </a>
+                
+                <div class="product-price-box">
+                    <span class="price-label">PRECIO / UNIT</span>
+                    <span class="price-value">$ {{ "{:,.0f}".format(producto['precio'] | float) if producto['precio'] else "0" }} COP</span>
+                </div>
+            </div>
+
+            <!-- Botón del Carrito -->
+<form action="{{ url_for('agregar_al_carrito') }}" method="POST" style="margin-top: 8px; text-align: right; background: none; border: none; padding: 0 12px 12px 0;">
+    
+    <!-- PASAPORTE DE DATOS CORREGIDO: Usamos comillas simples para la id y evitar choques -->
+    <input type="hidden" name="id_producto" value="{{ producto['id'] }}">
+    <input type="hidden" name="talla" value="ÚNICA">
+    <input type="hidden" name="cantidad" value="1">
+    
+    <!-- Botón Circular Premium que cambia a Rosa Neón al pasar el mouse -->
+    <button type="submit" style="background: none; border: 1px solid #ffffff; color: #ffffff; width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease-in-out; padding: 0; box-sizing: border-box;" onmouseenter="this.style.background='#ff0055'; this.style.borderColor='#ff0055';" onmouseleave="this.style.background='none'; this.style.borderColor='#ffffff';">
+        
+        <!-- Ícono Vectorial: Carrito con Signo Más (+) integrado en cian neón -->
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            <!-- Signo más (+) integrado -->
+            <line x1="12" y1="11" x2="16" y2="11" stroke="#00ffcc" stroke-width="2.5"></line>
+            <line x1="14" y1="9" x2="14" y2="13" stroke="#00ffcc" stroke-width="2.5"></line>
+        </svg>
+
+    </button>
+</form>
+
+
+</div>
+{% endfor %}
+
+
+</div>
+
+<hr>
+
+</div> <!-- Cierre del contenedor principal index-container de la parte 1 -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loader = document.getElementById('shirry-loader');
+
+    if (loader) {
+        // Consultamos si el navegador ya registró que viste la animación en esta pestaña
+        if (!sessionStorage.getItem('loader_visto')) {
+            
+            // PRIMERA VISITA: Ejecuta tu animación original de 1.3 segundos
+            setTimeout(() => {
+                loader.classList.add('fade-out');
+                console.log('// SHIRRY EMISSION: Activa.');
+            }, 1300);
+
+            // Guardamos la marca para bloquear futuras cargas molestas
+            sessionStorage.setItem('loader_visto', 'true');
+
+        } else {
+            // SEGUNDA VISITA EN ADELANTE: Lo removemos al instante en 0 milisegundos
+            loader.style.display = 'none';
+            loader.remove();
+            console.log('// SHIRRY BYPASS: Loader omitido por sesión activa.');
+        }
+    }
+});
+
+
+<!-- 🚀 SCRIPT DEFINITIVO: SINCRONIZA IMÁGENES, NÚMEROS Y TEXTOS -->
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const images = document.querySelectorAll(".campaign-img");
+    const indicators = document.querySelectorAll(".indicator-num");
+    const textSlides = document.querySelectorAll(".hero-text-slide");
+    const prevBtn = document.getElementById("hero-prev");
+    const nextBtn = document.getElementById("hero-next");
+    
+    let currentSlide = 0;
+    const totalSlides = images.length;
+    const slideDuration = 5000; // 5 segundos por slide
+    let autoSlideInterval;
+
+    function showSlide(index) {
+        if (index >= totalSlides) currentSlide = 0;
+        else if (index < 0) currentSlide = totalSlides - 1;
+        else currentSlide = index;
+
+        // 🖼️ 1. Control visual de las imágenes
+        images.forEach((img, i) => {
+            if (i === currentSlide) {
+                img.style.opacity = "1";
+                img.style.visibility = "visible";
+                img.style.transition = "opacity 0.6s ease-in-out";
+            } else {
+                img.style.opacity = "0";
+                img.style.visibility = "hidden";
+                img.style.transition = "opacity 0.6s ease-in-out";
+            }
+        });
+
+        // 📝 2. Control visual de los textos dinámicos
+        textSlides.forEach((slide, i) => {
+            if (i === currentSlide) {
+                slide.classList.add("active");
+            } else {
+                slide.classList.remove("active");
+            }
+        });
+
+        // 🔢 3. Control de los números indicadores
+        indicators.forEach((ind, i) => {
+            if (i === currentSlide) {
+                ind.classList.add("active");
+            } else {
+                ind.classList.remove("active");
+            }
+        });
+    }
+
+    function startAutoSlide() {
+        stopAutoSlide();
+        autoSlideInterval = setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, slideDuration);
+    }
+
+    function stopAutoSlide() {
+        clearInterval(autoSlideInterval);
+    }
+
+    nextBtn.addEventListener("click", () => {
+        showSlide(currentSlide + 1);
+        startAutoSlide();
+    });
+
+    prevBtn.addEventListener("click", () => {
+        showSlide(currentSlide - 1);
+        startAutoSlide();
+    });
+
+    indicators.forEach((ind, index) => {
+        ind.addEventListener("click", () => {
+            showSlide(index);
+            startAutoSlide();
+        });
+    });
+
+    showSlide(0);
+    startAutoSlide();
+});
+
+<!-- 🚀 SCRIPT INTERSECTION OBSERVER: DISPARA EL ACERCAMIENTO AL BAJAR -->
+
+document.addEventListener("DOMContentLoaded", function () {
+    const bentoItems = document.querySelectorAll(".category-grid-item");
+
+    const observerOptions = {
+        root: null, // Vigila la ventana del navegador
+        rootMargin: "0px",
+        threshold: 0.12 // La animación se dispara cuando asoma el 12% del cuadro en pantalla
+    };
+
+    const bentoObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                // Effecto cascada secuencial (100ms entre cada cuadro para más elegancia)
+                setTimeout(() => {
+                    entry.target.classList.add("reveal-active");
+                }, index * 100);
+                
+                // Una vez que aparece, deja de vigilarlo para que cargue súper rápido
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Activamos el ojo visor en tus 5 celdas
+    bentoItems.forEach(item => {
+        bentoObserver.observe(item);
+    });
+});
+
+</script>
+
+
+
+<!-- LA NUEVA LÍNEA QUE DEBES AGREGAR AQUÍ ABAJO DEL TODO -->
+{% endblock %}
+
+

@@ -1,0 +1,123 @@
+/* ==========================================================================
+   SHIRRY - DIGITAL RECOVERY TERMINAL (ESTÉTICA NEÓN-BRUTALISTA)
+   ========================================================================== */
+
+.recovery-page {
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.recovery-card {
+    background: #0d0d0d; /* Fondo negro puro de terminal */
+    border: 3px solid #111111; /* Borde industrial duro */
+    border-radius: 0px !important; /* Esquinas rectas brutales de 90 grados */
+    width: 100%;
+    max-width: 420px;
+    padding: 45px 35px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    /* Animación de entrada de la tarjeta */
+    animation: terminalBoot 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* Efecto glitch/parpadeo de transición para simular carga de datos */
+.recovery-card.glitch-transition {
+    animation: stepGlitch 0.3s ease-in-out;
+}
+
+/* ==========================================================================
+   SHIRRY - DIGITAL RECOVERY TERMINAL (COLORES EN FUCSIA/MORADO CYBERPUNK)
+   ========================================================================== */
+
+/* 1. Cambio en el indicador de pasos superior (El nodo activo) */
+.step-node.active {
+    border-color: #ff0055 !important; /* Fucsia neón de SHIRRY */
+    color: #ff0055 !important;
+    box-shadow: 0 0 12px #ff0055;
+}
+
+/* 2. Cambio en el título principal */
+.recovery-card h2 {
+    color: #ff0055 !important; /* Fucsia para romper la monotonía del blanco */
+    font-family: 'Courier New', monospace;
+    font-weight: 900;
+    font-size: 24px;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0 0 10px 0;
+    letter-spacing: 2px;
+}
+
+/* 3. Cambio en el efecto hover del botón maestro */
+.recovery-card .btn-primary:hover {
+    background: #ff0055 !important; /* Botón se ilumina en fucsia al pasar el cursor */
+    border-color: #ff0055 !important;
+    box-shadow: 0 0 15px #ff0055;
+    color: #ffffff !important; /* Texto cambia a blanco para contrastar */
+}
+
+
+.recovery-subtitle {
+    color: #666666; /* Texto secundario gris de código */
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 35px;
+    line-height: 1.5;
+}
+
+/* Forzar estilos brutalistas duros en los inputs y botones de esta vista */
+.recovery-card .form-group input {
+    border-radius: 0px !important;
+    border: 3px solid #222222 !important;
+    background: #111111 !important;
+    color: #00ff00 !important; /* Texto en verde neón clásico de monitor CRT */
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+.recovery-card .form-group input:focus {
+    border-color: #00ff00 !important;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.recovery-card .btn-primary {
+    border-radius: 0px !important;
+    background: #ffffff !important; /* Botón blanco plano inverso */
+    color: #000000 !important;
+    font-family: 'Courier New', monospace;
+    font-weight: 900;
+    text-transform: uppercase;
+    border: 3px solid #ffffff !important;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+}
+
+.recovery-card .btn-primary:hover {
+    background: #00ff00 !important; /* Hover verde neón de advertencia */
+    border-color: #00ff00 !important;
+    box-shadow: 0 0 15px #00ff00;
+}
+
+/* ANIMACIONES CSS */
+@keyframes terminalBoot {
+    0% { transform: scaleY(0.005) scaleX(0); background: #ffffff; }
+    50% { transform: scaleY(0.005) scaleX(1); background: #0d0d0d; }
+    100% { transform: scaleY(1) scaleX(1); }
+}
+
+@keyframes stepGlitch {
+    0% { opacity: 1; filter: invert(0); }
+    25% { opacity: 0.3; filter: invert(1) blurs(2px); }
+    50% { opacity: 0.8; }
+    75% { opacity: 0.2; transform: translateX(2px); }
+    100% { opacity: 1; filter: invert(0); }
+}
