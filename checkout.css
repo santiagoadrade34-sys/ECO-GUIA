@@ -1,0 +1,472 @@
+/* ==========================================================================
+   SHIRRY CORE - ARQUITECTURA DE DISEÑO EXCLUSIVA PARA EL CHECKOUT
+   ========================================================================== */
+.sc-checkout-wrapper {
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: monospace;
+    color: #ffffff;
+}
+
+.sc-checkout-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    border-left: 3px solid #ff0055;
+    padding-left: 15px;
+}
+
+.sc-checkout-layout {
+    display: grid;
+    grid-template-columns: 63% 37%;
+    gap: 40px;
+    align-items: start;
+}
+
+.sc-billing-column {
+    background: #000000;
+    border: 1px solid #111111;
+    padding: 30px;
+    border-radius: 4px;
+}
+
+.sc-checkout-subtitle {
+    font-size: 0.9rem;
+    color: #00ffcc;
+    letter-spacing: 1px;
+    margin: 0 0 20px 0;
+    text-transform: uppercase;
+    border-bottom: 1px dashed #222;
+    padding-bottom: 8px;
+}
+
+.sc-form-flex-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.sc-form-group {
+    flex: 1;
+}
+
+.sc-form-group-full {
+    margin-bottom: 20px;
+}
+
+.sc-form-group label {
+    display: block;
+    font-size: 0.75rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.sc-checkout-input, 
+.sc-checkout-textarea {
+    width: 100%;
+    background: #070707;
+    border: 1px solid #222;
+    padding: 12px;
+    color: #fff;
+    font-family: monospace;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.sc-checkout-input:focus, 
+.sc-checkout-textarea:focus {
+    border-color: #ff0055;
+}
+
+.sc-checkout-textarea {
+    resize: none;
+}
+
+.sc-checkout-summary {
+    background: #0a0a0a;
+    border: 1px solid #111111;
+    padding: 25px;
+    border-radius: 4px;
+    position: sticky;
+    top: 100px;
+    box-sizing: border-box;
+}
+
+.sc-checkout-items-list {
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-right: 5px;
+}
+
+.sc-checkout-item-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    border-bottom: 1px solid #111;
+    padding-bottom: 10px;
+}
+
+.sc-item-line-name {
+    color: #ffffff;
+    text-transform: uppercase;
+    display: block;
+    font-weight: bold;
+}
+
+.sc-item-line-meta {
+    color: #666;
+}
+
+.sc-item-line-meta strong {
+    color: #00ffcc;
+}
+
+.sc-checkout-pricing-block {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-size: 0.85rem;
+    color: #aaaaaa;
+    border-top: 1px dashed #222;
+    padding-top: 15px;
+}
+
+.sc-pricing-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sc-pricing-row-flete {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #111;
+    padding-bottom: 15px;
+}
+
+.sc-pricing-row-flete span:last-child {
+    color: #00ffcc;
+    font-weight: bold;
+}
+
+.sc-pricing-row-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+    padding-bottom: 20px;
+}
+
+.sc-pricing-row-total span:first-child {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.sc-pricing-total-amount {
+    color: #ff0055;
+    font-weight: bold;
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+}
+
+.sc-btn-submit-order {
+    width: 100%;
+    background: #ff0055;
+    color: #ffffff;
+    border: none;
+    padding: 16px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.sc-btn-submit-order:hover {
+    background: #ff3377;
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+}
+
+.sc-checkout-trust-footer {
+    color: #444;
+    font-size: 0.65rem;
+    text-align: center;
+    margin-top: 15px;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+}
+
+@media (max-width: 992px) {
+    .sc-checkout-layout { grid-template-columns: 1fr; gap: 30px; }
+    .sc-checkout-summary { position: static; }
+    .sc-form-flex-row { flex-direction: column; gap: 0; }
+    .sc-form-group { margin-bottom: 20px; }
+}
+
+/* ==========================================================================
+   MODAL DE VISUALIZACIÓN EN PANTALLA (FORMATO ANCHO / HORIZONTAL)
+   ========================================================================== */
+.sc-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.sc-modal-container {
+    background: #111111;
+    border: 1px solid #333333;
+    max-width: 1100px; /* Ancho extendido para vista horizontal */
+    width: 95%;
+    max-height: 94vh;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+}
+
+.sc-modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+.sc-btn-action-print {
+    background: #2a2a2a;
+    color: #ffffff;
+    border: 1px solid #555555;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.8rem;
+    font-family: monospace;
+}
+
+.sc-btn-action-confirm {
+    background: #00e676;
+    color: #000000;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.8rem;
+    font-family: monospace;
+}
+
+.sc-btn-action-close {
+    background: transparent;
+    color: #aaaaaa;
+    border: 1px solid #444444;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: monospace;
+}
+
+.sc-btn-action-print:hover { background: #3a3a3a; }
+.sc-btn-action-confirm:hover { background: #00c853; }
+.sc-btn-action-close:hover { color: #ffffff; border-color: #666666; }
+
+/* ==========================================================================
+   FACTURA ESTRUCTURAL CUADRICULADA HORIZONTAL (LANDSCAPE)
+   ========================================================================== */
+.sc-invoice-sheet {
+    background: #ffffff;
+    color: #000000;
+    padding: 25px 35px;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Fila 1: Logo y Empresa */
+.inv-header-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    border: 2px solid #000000;
+}
+
+.inv-header-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 2px solid #000000;
+    padding: 10px;
+}
+
+.inv-logo-text {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: -1px;
+}
+
+.inv-header-company {
+    padding: 10px;
+    text-align: center;
+    line-height: 1.35;
+}
+
+.inv-company-title {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.inv-company-sub {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* Fila 2: Fecha y Hora */
+.inv-datetime-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-left: 2px solid #000000;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+}
+
+.inv-cell-date, 
+.inv-cell-time {
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.inv-cell-date {
+    border-right: 1px solid #000000;
+}
+
+.inv-label {
+    margin-right: 6px;
+}
+
+.inv-value {
+    font-weight: normal;
+}
+
+/* Fila 3: Tabla de Productos y Totales */
+.inv-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0;
+    border-left: 2px solid #000000;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+}
+
+.inv-table th, 
+.inv-table td {
+    border: 1px solid #000000;
+    padding: 6px 10px;
+    font-size: 11px;
+}
+
+.inv-table th {
+    background: #ffffff;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    padding: 8px 6px;
+}
+
+.inv-empty-row td {
+    height: 22px;
+}
+
+.inv-blank-cell {
+    vertical-align: top;
+    border-right: 1px solid #000000;
+    padding: 10px 14px !important;
+}
+
+.inv-customer-meta {
+    font-size: 10px;
+    line-height: 1.45;
+    color: #222222;
+}
+
+.inv-total-label {
+    font-weight: bold;
+    font-size: 11px;
+    text-align: left;
+}
+
+.inv-total-val {
+    font-weight: bold;
+    font-size: 11px;
+    text-align: right;
+}
+
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+/* ==========================================================================
+   CONFIGURACIÓN DE IMPRESIÓN FORZADA EN HORIZONTAL (@media print)
+   ========================================================================== */
+@page {
+    size: landscape; /* Configura la orientación de la hoja a horizontal */
+    margin: 10mm;    /* Márgenes limpios para la hoja */
+}
+
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+
+    #sc-printable-invoice, 
+    #sc-printable-invoice * {
+        visibility: visible !important;
+    }
+
+    .sc-modal-overlay {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        background: transparent !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+
+    .sc-modal-container {
+        background: transparent !important;
+        border: none !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    #sc-printable-invoice {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100% !important;
+        padding: 0;
+        margin: 0;
+    }
+}

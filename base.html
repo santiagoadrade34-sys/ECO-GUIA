@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIRRY</title>
+    
+    <!-- Tu hoja de estilos principal -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vista_rapida.css') }}">
+
+
+    <!-- 🌟 ESTA LÍNEA ES OBLIGATORIA (Es el gancho que recibe el CSS de perfil) -->
+    {% block extra_css %}{% endblock %}
+    
+    <link rel="icon" type="image/webp" href="{{ url_for('static', filename='imagenes/ui/logo-shirry.webp') }}">
+</head>
+
+<body>
+
+    <!-- 2. Tu barra de navegación (se renderiza en todas las páginas) -->
+    {% include 'navbar.html' %}
+
+    {% include 'carrito_sidebar.html' %}
+
+    <!-- 3. Contenedor principal dinámico de Flask -->
+    <main id="main-content">
+        {% block content %}
+        <!-- Aquí se inyectará tu nuevo index.html o cualquier otra página -->
+        {% endblock %}
+    </main>
+
+        <!-- VENTANA MODAL GLOBAL DE VISTA RÁPIDA (SHIRRY CORE SYSTEM) -->
+    <div class="qv-modal-overlay" id="quickview-modal-system">
+        <div class="qv-card">
+            <button class="qv-close-btn" id="qv-close-trigger">×</button>
+            
+            <!-- COLUMNA IZQUIERDA: GALERÍA DE IMÁGENES -->
+            <div class="qv-gallery-side">
+                <div class="qv-thumbnails" id="qv-target-thumbs">
+                    <!-- Inyección dinámica con JS -->
+                </div>
+                <div class="qv-main-display">
+                    <img src="" id="qv-target-main-img" class="qv-main-img" alt="SHIRRY PREVIEW">
+                </div>
+            </div>
+            
+            <!-- COLUMNA DERECHA: ESPECIFICACIONES TÉCNICAS -->
+            <div class="qv-info-side">
+                <h2 class="qv-title" id="qv-target-title">PRODUCT_NAME</h2>
+                <div class="qv-sku" id="qv-target-sku">REG_SYS // ID: 00</div>
+                <div class="qv-price" id="qv-target-price">$000,000 COP</div>
+                
+                <div class="qv-tallas-title">TALLA_DISPONIBLE:</div>
+                <div class="qv-tallas-grid" id="qv-target-sizes">
+                    <!-- Inyección dinámica con JS -->
+                </div>
+                
+                <!-- Botón Conectado al Carrito Asíncrono de SHIRRY -->
+                <button class="btn-primary" id="qv-add-to-cart-trigger" data-id="" style="width: 100%; padding: 15px; margin-top: auto;">AÑADIR A LA BOLSA_</button>
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <!-- 5. Tus scripts de JavaScript al final -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

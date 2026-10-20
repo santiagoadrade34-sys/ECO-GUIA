@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-master-container">
+    
+    <!-- 1. CABECERA DEL CLON (Inspirada en tu referencia de Manga) -->
+    <header class="profile-cyber-header">
+        <div class="user-meta-block">
+            <div class="avatar-circle-neon">
+                <span>{{ session.get('usuario_nombre', 'NS') | upper if session.get('usuario_nombre') else 'X' }}</span>
+            </div>
+            
+                <h2>{{ session.get('usuario_nombre', 'NEO SHIRRY') | upper }}</h2>
+                <p class="meta-sub">> IDENTIFICADOR CLON: #{{ session.get('usuario_id', '1') }}</p>
+                <p class="meta-sub">> CORREO ENLACE: {{ session.get('usuario_email', 'desconectado@shirrycore.com') }}</p>
+            </div>
+        </div>
+        <div class="terminal-timestamp-box">
+            <span class="pulse-dot"></span> SYSTEM_CORE_ACTIVE // CORE_RUNNING
+        </div>
+    </header>
+
+    <!-- 2. BOTONERA DE PESTAÑAS INTERACTIVAS (Look Monospace Industrial) -->
+    <nav class="profile-tabs-nav">
+        <button class="tab-trigger active" onclick="switchProfileTab(event, 'panel-general')">[ 📁 GENERAL ]</button>
+        <button class="tab-trigger" onclick="switchProfileTab(event, 'panel-pedidos')">[ 📦 PEDIDOS_OPERACIONALES ]</button>
+        <button class="tab-trigger" onclick="switchProfileTab(event, 'panel-favoritos')">[ 🔖 LISTA_DESEOS ]</button>
+        <button class="tab-trigger" onclick="switchProfileTab(event, 'panel-ajustes')">[ ⚙️ AJUSTES ]</button>
+    </nav>
+
+    <!-- 3. CONTENEDOR DINÁMICO DE PANELES -->
+    <div class="profile-panels-wrapper">
+        
+        <!-- PANEL A: GENERAL -->
+        <div id="panel-general" class="profile-tab-panel active">
+            <div class="cyber-form-grid">
+                <div class="form-group-cyber">
+                    <label>NOMBRE DE REGISTRO TERMINAL:</label>
+                    <input type="text" value="{{ session.get('usuario_nombre', 'NEO SHIRRY') }}" readonly>
+                </div>
+                <div class="form-group-cyber">
+                    <label>NIVEL DE ACCESO EN ENLACE:</label>
+                    <input type="text" value="{% if session.get('usuario_email') == 'admin@shirrystudios.com' %}PROPIETARIO MÁSTER SYSTEM{% else %}CLON_ESTÁNDAR_OPERATIVO{% endif %}" readonly style="color: #00ffcc;">
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL B: PEDIDOS OPERACIONALES (Inspirado al 100% en TEMU y AliExpress) -->
+        <div id="panel-pedidos" class="profile-tab-panel">
+            <div class="orders-terminal-list">
+                
+                <!-- BLOQUE PEDIDO 1 -->
+                <div class="order-invoice-block">
+                    <div class="order-invoice-header">
+                        <span class="status-badge-green">[ ✔️ ENTREGADO ]</span>
+                        <span class="order-serial">ID_LOTE: PO-045-0964712718399</span>
+                    </div>
+                    <div class="order-invoice-body">
+                        <!-- Miniaturas de las prendas adquiridas en este drop -->
+                        <div class="order-thumbnails-row">
+                            <div class="thumb-preview-box">
+                                <img src="{{ url_for('static', filename='imagenes/productos/camiseta-blanca.webp') }}" onerror="this.style.display='none'">
+                            </div>
+                            <div class="thumb-preview-box">
+                                <img src="{{ url_for('static', filename='imagenes/productos/pantalon-coleccion.webp') }}" onerror="this.style.display='none'">
+                            </div>
+                        </div>
+                        <div class="order-actions-summary">
+                            <div class="order-meta-info">
+                                <span>BATCH: 2 ARTÍCULOS</span>
+                                <span class="total-net-text">TOTAL NETO: $235.000 COP</span>
+                            </div>
+                            <div class="order-buttons-group">
+                                <button class="btn-order-action">[ RASTREAR_ENVÍO ]</button>
+                                <button class="btn-order-action btn-order-primary">[ VOLVER_A_COMPRAR ]</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PANEL C: LISTA DE DESEOS (Tu grilla de Favoritos estilo Manga) -->
+        <div id="panel-favoritos" class="profile-tab-panel">
+            <div class="empty-terminal-msg">
+                > [ FILTRO_VACÍO: NO SE REGISTRAN ÍTEMS EN LA LISTA DE FAVORITOS DEL CLON ]
+            </div>
+        </div>
+
+        <!-- PANEL D: AJUSTES -->
+        <div id="panel-ajustes" class="profile-tab-panel">
+            <div class="cyber-form-grid">
+                <div class="form-group-cyber">
+                    <label>MODIFICAR DIRECCIÓN DE DESPACHO FISCAL:</label>
+                    <input type="text" placeholder="Inyectar nueva dirección de entrega...">
+                </div>
+                <div class="form-group-cyber" style="margin-top: 30px;">
+                    <a href="{{ url_for('logout') }}" class="btn-terminal-red">[ TERMINAR EMISIÓN / CERRAR SESIÓN ]</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- LÓGICA INTERACTIVA ASÍNCRONA LOCAL PARA CAMBIO DE PESTAÑAS -->
+<script>
+function switchProfileTab(evt, tabId) {
+    const panels = document.querySelectorAll('.profile-tab-panel');
+    panels.forEach(panel => panel.classList.remove('active'));
+
+    const triggers = document.querySelectorAll('.tab-trigger');
+    triggers.forEach(trigger => trigger.classList.remove('active'));
+
+    document.getElementById(tabId).classList.add('active');
+    evt.currentTarget.classList.add('active');
+}
+</script>
+{% endblock %}

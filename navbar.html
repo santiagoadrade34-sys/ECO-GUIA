@@ -1,0 +1,278 @@
+<!-- ==========================================================================
+     BARRA DE NAVEGACIÓN PRINCIPAL (SHIRRY)
+     ========================================================================== -->
+
+<nav class="navbar">
+
+    <!-- Lado Izquierdo: Menú y Reloj (Se remueve la palabra MENÚ) -->
+    <div class="nav-left">
+        <button class="nav-item btn-menu" id="btn-menu" title="Abrir Menú">
+            <span class="icon-menu">☰</span>
+        </button>
+        <div class="nav-item" id="digital-clock">00:00 AM</div>
+    </div>
+
+    <!-- Centro: El Logo de tu marca -->
+    <div class="nav-center">
+        <a href="{{ url_for('inicio') }}" class="logo-link">
+            <img src="{{ url_for('static', filename='imagenes/ui/logo_shirry_blanco.webp') }}" alt="SHIRRY" class="logo-img">
+        </a>
+    </div>
+
+    <!-- Lado Derecho: Interacciones y Carrito (Se encierra todo de forma simétrica) -->
+    <div class="nav-right" style="display: flex; align-items: center; gap: 20px;">
+        
+        <!-- Tu nueva lupa con el ojo (Abre tu buscador asíncrono gracias a id="btn-search") -->
+         <a href="#" class="nav-item" id="btn-search" style="display: inline-flex; align-items: center; text-decoration: none;" title="Buscar">
+             <img src="{{ url_for('static', filename='imagenes/ui/lupa_buscador.webp') }}" 
+                alt="Buscar" 
+                style="width: 32px; height: 32px; object-fit: contain; display: block;">
+        </a>
+
+
+
+
+
+<!-- LÍNEA 25: CONTROL DE SESIÓN CORREGIDO (AVATAR MAXIMIZADO Y SIN BOTÓN [X]) -->
+{% if session.get('usuario_id') %}
+    <div class="nav-item user-session-display" style="display: flex; align-items: center;">
+        
+        <!-- Enlace que envuelve la foto para redirigir a /perfil -->
+        <a href="/perfil" style="display: block; text-decoration: none;" title="Perfil / Panel de Operador">
+            
+            <!-- Contenedor del avatar ampliado a 38px con transición de brillo neón -->
+            <div class="nav-avatar-frame" style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid #ff0055; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: #050505; transition: all 0.2s ease-in-out; box-shadow: 0 0 5px rgba(255, 0, 85, 0.2);" onmouseenter="this.style.borderColor='#00ffcc'; this.style.boxShadow='0 0 10px rgba(0, 255, 204, 0.6)';" onmouseleave="this.style.borderColor='#ff0055'; this.style.boxShadow='0 0 5px rgba(255, 0, 85, 0.2)';">
+                <img src="{{ url_for('static', filename='imagenes/ui/logo_usuario_navbar.webp') }}" alt="User Core" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            </div>
+
+        </a>
+    </div>
+{% else %}
+    <!-- Enlace por si no ha iniciado sesión -->
+    <a href="{{ url_for('login') }}" class="nav-item" style="color: #ffffff; display: flex; align-items: center;" title="Iniciar Sesión">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+    </a>
+{% endif %}
+
+
+<!-- CONTROL DE CARRITO ESTILO SHEIN (NÚMERO DINÁMICO AL LADO) -->
+<a href="/carrito" id="navbar-cart-trigger" style="display: inline-flex; align-items: center; gap: 4px; text-decoration: none; padding: 5px 0;" title="Carrito">
+    
+    <!-- Tu imagen oficial del carrito -->
+    <img src="{{ url_for('static', filename='imagenes/ui/carrito_icono.webp') }}" 
+         alt="Carrito" 
+         class="sc-nav-cart-img" 
+         style="display: block; width: 32px; height: 32px; object-fit: contain;">
+
+    <!-- Indicador numérico alineado exactamente al lado derecho -->
+    <span class="sc-cart-badge" style="color: #ff0055; font-family: 'Courier New', monospace; font-size: 0.85rem; font-weight: bold; display: inline-block; line-height: 1; user-select: none;">
+        {{ total_items_navbar|default(0) }}
+    </span>
+
+</a>
+
+        <div class="nav-item stats">
+            <div id="scroll-percentage">0%</div>
+        </div>
+    </div>
+
+    <!-- Barra física de progreso de lectura (Scroll) -->
+    <div class="scroll-progress-container">
+        <div id="scroll-progress-bar" class="scroll-progress-fill"></div>
+    </div>
+</nav>
+
+<!-- ========================================================================== -->
+<!-- COMPONENTE: BUSCADOR CENTRALIZADO GLOBAL (NAVBAR SYSTEM)                   -->
+<!-- ========================================================================== -->
+<div id="search-dropdown" class="search-dropdown">
+    <div class="search-dropdown-wrapper">
+        <div class="nav-search-master-container" style="position: relative; max-width: 400px; width: 100%; font-family: monospace;">
+            
+            <!-- Input de Búsqueda de tu Barra -->
+            <div class="nav-search-field-box" style="display: flex; align-items: center; background-color: #000000; border: 1px solid #111111; padding: 6px 12px; border-radius: 4px;">
+                
+                <!-- SÍMBOLO INTERNO RESTAURADO PARA COHERENCIA DE CAJA -->
+                <span style="color: #444444; margin-right: 8px; font-size: 0.8rem; display: flex; align-items: center; user-select: none;">⌕</span>
+                
+                <!-- Recupera el término buscado si ya estamos en la tienda -->
+                <input type="text" id="navGlobalSearchInput" value="{{ request.args.get('q', '') }}" placeholder="BUSCAR PRENDA..." autocomplete="off" style="width: 100%; background: none; border: none; color: #ffffff; font-family: monospace; font-size: 0.8rem; outline: none;">
+                <span id="navSearchClearBtn" style="color: #444444; cursor: pointer; display: none; font-size: 0.8rem; margin-left: 8px;">[X]</span>
+            </div>
+
+            <!-- CAJA FLOTANTE DE RESULTADOS ASÍNCRONOS -->
+            <div id="navSearchResultsDropdown" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background-color: #000000; border: 1px solid #111111; border-top: none; max-height: 300px; overflow-y: auto; z-index: 9999; box-shadow: 0 15px 30px rgba(0,0,0,0.7); padding: 5px 0;">
+                <div id="navSearchLoader" style="padding: 12px; font-size: 0.75rem; color: #8929ff; display: none;">=> CONFIG_STREAM: BUSCANDO EN BASE DE DATOS...</div>
+                <div id="navSearchResultsContainer"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ==========================================================================
+     PANEL LATERAL DE MENÚ RESTAURADO (SHIRRY CORE)
+     ========================================================================== -->
+<div id="menu-sidebar" class="menu-sidebar">
+    <!-- Cabecera del Menú -->
+    <div class="menu-sidebar-header">
+        <h2 class="menu-title">SHIRRY</h2>
+        <button id="btn-close-menu" class="close-menu">✕ CERRAR</button>
+    </div>
+    
+    <!-- Módulo de Estado de Sesión -->
+    <div class="menu-user-status" style="padding: 10px 40px 0px 40px; font-family: 'Courier New', Courier, monospace;">
+        {% if session.get('usuario_id') %}
+            <div style="border: 1px solid #111111; padding: 15px; background: #050505;">
+                <p style="color: #555555; font-size: 0.75rem; margin: 0 0 5px 0;">> CONEXIÓN ESTABLECIDA</p>
+                <p style="color: #ffffff; font-size: 0.9rem; font-weight: bold; margin: 0;">👤 {{ session.get('usuario_nombre') | upper }}</p>
+                <div style="display: flex; gap: 15px; font-size: 0.75rem; margin-top: 10px;">
+                    {% if session.get('usuario_email') == 'admin@shirrystudios.com' %}
+                        <a href="{{ url_for('admin_dashboard') }}" style="color: #ffffff; text-decoration: none; font-weight: bold;">[DB]</a>
+                    {% endif %}
+                    <a href="{{ url_for('logout') }}" style="color: #ff3366; text-decoration: none;">[CERRAR SESIÓN]</a>
+                </div>
+            </div>
+        {% else %}
+            <div style="border: 1px solid #111111; padding: 15px; background: #050505;">
+                <p style="color: #555555; font-size: 0.75rem; margin: 0 0 8px 0;">> MODO INVITADO</p>
+                <a href="{{ url_for('login') }}" style="color: #ffffff; text-decoration: none; font-size: 0.85rem; font-weight: bold; letter-spacing: 1px;">[▶ INICIAR SESIÓN / REGISTRO]</a>
+            </div>
+        {% endif %}
+    </div>
+        
+    <!-- Contenido Central de Enlaces -->
+    <div class="menu-sidebar-content">
+        <ul class="menu-links-list">
+            <li><a href="{{ url_for('inicio') }}" class="menu-link-item">INICIO</a></li>
+            <li><a href="{{ url_for('shop') }}" class="menu-link-item">TIENDA / TODOS LOS PRODUCTOS</a></li>
+            <li><a href="{{ url_for('probador') }}" class="menu-link-item">PROBADOR</a></li>
+            <li><a href="{{ url_for('nosotros') }}" class="menu-link-item">NOSOTROS</a></li>
+            <li><a href="#" class="menu-link-item">BLOG</a></li>
+            <li><a href="#" class="menu-link-item">SOPORTE / CONTACTO</a></li>
+        </ul>
+    </div>
+
+    <!-- Pie del Menú -->
+    <div class="menu-sidebar-footer">
+        <div class="menu-socials">
+            <a href="#">INSTAGRAM</a>
+            <a href="#">TIKTOK</a>
+            <a href="#">FACEBOOK</a>
+        </div>
+        <p class="menu-legal-notice">© 2026 SHIRRY. ALL RIGHTS RESERVED.</p>
+    </div>
+</div>
+
+<!-- CAPA DE SOMBRA DE FONDO PARA EL EFECTO DE DIFUMINADO ORIGINAL -->
+<div id="menu-overlay" class="menu-overlay"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById("navGlobalSearchInput");
+    const dropdownMenu = document.getElementById("navSearchResultsDropdown");
+    const resultsContainer = document.getElementById("navSearchResultsContainer");
+    const loader = document.getElementById("navSearchLoader");
+    const clearBtn = document.getElementById("navSearchClearBtn");
+    
+    let debounceTimer;
+
+    if (searchInput && dropdownMenu && resultsContainer) {
+        
+        // 🚀 NUEVA LÓGICA DE REDIRECCIÓN: Escucha si el usuario presiona ENTER
+        searchInput.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                const query = searchInput.value.trim();
+                // Redirige a la tienda global inyectando la palabra escrita en la URL
+                window.location.href = `/shop?q=${encodeURIComponent(query)}`;
+            }
+        });
+
+        searchInput.addEventListener("input", function() {
+            const query = searchInput.value.trim();
+            
+            if (query.length < 2) {
+                dropdownMenu.style.display = "none";
+                if (clearBtn) clearBtn.style.display = "none";
+                return;
+            }
+
+            if (clearBtn) clearBtn.style.display = "block";
+            
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(async () => {
+                if (loader) loader.style.display = "block";
+                resultsContainer.innerHTML = "";
+                dropdownMenu.style.display = "block";
+
+                try {
+                    const response = await fetch(`/api/buscar_global?q=${encodeURIComponent(query)}`);
+                    const productos = await response.json();
+                    
+                    if (loader) loader.style.display = "none";
+
+                    if (productos.length === 0) {
+                        resultsContainer.innerHTML = `<div style="padding: 12px; font-size: 0.75rem; color: #444444;">> NO_MATCHES: SIN COINCIDENCIAS FÍSICAS...</div>`;
+                        return;
+                    }
+
+                    productos.forEach(prod => {
+                        const itemRow = document.createElement("div");
+                        itemRow.style.cssText = "display: flex; align-items: center; gap: 12px; padding: 10px 15px; cursor: pointer; border-bottom: 1px solid #0a0a0a; transition: background 0.2s;";
+                        
+                        const formattedPrice = new Intl.NumberFormat('es-CO').format(prod.precio);
+                        
+                        itemRow.innerHTML = `
+                            <img src="/static/imagenes/productos/${prod.imagen_url}" style="width: 32px; height: 32px; object-fit: contain; background: #111; border-radius: 4px;">
+                            <div style="flex: 1; text-align: left; display: flex; flex-direction: column; gap: 1px;">
+                                <span style="color: #ffffff; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;">${prod.categoria}</span>
+                                <span style="color: #444444; font-size: 0.65rem;">SERIAL: #${prod.id}</span>
+                            </div>
+                            <span style="color: #8929ff; font-size: 0.75rem; font-weight: bold;">$${formattedPrice}</span>
+                        `;
+
+                        // Al dar clic en el minicintillo flotante, viaja a la tienda y la filtra de una
+                        itemRow.addEventListener("click", function() {
+                            window.location.href = `/shop?q=${encodeURIComponent(prod.categoria.toLowerCase())}`;
+                        });
+
+                        itemRow.addEventListener("mouseenter", () => itemRow.style.backgroundColor = "#0d0317");
+                        itemRow.addEventListener("mouseleave", () => itemRow.style.backgroundColor = "transparent");
+
+                        resultsContainer.appendChild(itemRow);
+                    });
+
+                } catch (error) {
+                    console.error("[BUSCADOR]: Error en la comunicación JSON:", error);
+                    if (loader) loader.style.display = "none";
+                }
+            }, 300);
+        });
+
+        if (clearBtn) {
+            clearBtn.addEventListener("click", function() {
+                searchInput.value = "";
+                dropdownMenu.style.display = "none";
+                clearBtn.style.display = "none";
+                // Si limpia el buscador estando en la tienda, refresca para mostrar todo de nuevo
+                if (window.location.pathname.includes("/shop")) {
+                    window.location.href = "/shop";
+                } else {
+                    searchInput.focus();
+                }
+            });
+        }
+
+        document.addEventListener("click", function(e) {
+            if (!e.target.closest(".nav-search-master-container")) {
+                dropdownMenu.style.display = "none";
+            }
+        });
+    }
+});
+</script>

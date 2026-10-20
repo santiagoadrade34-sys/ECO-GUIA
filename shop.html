@@ -1,0 +1,565 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Vinculación limpia de tu hoja de estilos exclusiva para la tienda -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}">
+
+<div class="shop-page-wrapper">
+
+
+    <!-- 🚀 BANNER SUPERIOR CON FONDO DE CAMPAÑA DINÁMICO (SÚPER LENTO) -->
+    <div class="store-header-banner">
+        <div class="store-header-text">
+            <h1>TIENDA</h1>
+            <p>Explora todas nuestras piezas.</p>
+        </div>
+    </div>
+
+    <!-- ========================================================================== -->
+    <!-- 1. BARRA SUPERIOR DE MANDOS MÁSTER DE FILTRADO (ESTILO REJILLA ORIGINAL)   -->
+    <!-- ========================================================================== -->
+    <div class="shop-top-controls-v2">
+        
+        <!-- Bloque de Visualización de Vista -->
+        <div class="view-modes-block">
+            <span class="control-label-mono">VISTA:</span>
+            <button class="btn-grid-layout active" type="button" title="Vista de Rejilla">
+                <span class="grid-icon-box"></span>
+                <span class="grid-icon-box"></span>
+                <span class="grid-icon-box"></span>
+                <span class="grid-icon-box"></span>
+            </button>
+        </div>
+
+<!-- 🚀 ENCAPSULAMOS EL COMPONENTE POR SEPARADO EN SU PROPIA CAJA ANCLA -->
+<div class="sort-dropdown-custom-wrapper">
+    
+<!-- 🚀 VOLVEMOS AL HTML COMPACTO ORIGINAL PARA CORREGIR LA BARRA -->
+<button class="btn-sort-custom-trigger" id="sortDropdownTrigger">
+    ORDENAR POR <span class="sort-arrow-indicator">▼</span>
+</button>
+
+<div class="sort-dropdown-floating-menu cyber-popup-menu" id="sortCustomMenu">
+    <ul class="sort-options-list-mono">
+        <li class="sort-option-item" data-sort="recientes">Fecha: reciente a antiguo(a)</li>
+        <li class="sort-option-item" data-sort="precio-bajo">Precio: menor a mayor</li>
+        <li class="sort-option-item" data-sort="precio-alto">Precio: mayor a menor</li>
+        <li class="sort-option-item" data-sort="mas-vendidos">Más vendidos</li>
+    </ul>
+</div>
+
+            <!-- Input oculto maestro que lee el script para ordenar en el DOM -->
+            <input type="hidden" id="cyberSortSelect" value="recientes">
+        </div>
+
+        <!-- Botón de Gatillo con el ID exacto que dispara tu función de Cortina Suave -->
+        <button class="btn-filter-trigger" id="btnFilterToggle" type="button">
+            FILTRAR <span class="filter-indicator-line">|</span>
+        </button>
+
+    </div>
+
+    <!-- ========================================================================== -->
+    <!-- 2. PANEL DESPLEGABLE DE FILTROS MASIVOS (DISEÑO FIEL CON ANIMACIÓN)        -->
+    <!-- ========================================================================== -->
+    <div class="cyber-filter-drawer-panel" id="filterDrawer">
+        <div class="drawer-grid-layout">
+            
+            <!-- Fila 1: Filtro Avanzado de Rangos de Precio -->
+            <div class="drawer-filter-col">
+                <h3 class="filter-col-title">PRECIO <span class="arrow-indicator">»</span></h3>
+                <div class="range-slider-container">
+                    <input type="range" id="priceRangeInput" name="max_precio" min="0" max="1500000" step="50000" value="1500000" class="cyber-range-slider">
+                    <div class="range-values-display">
+                        <div class="price-box-mono">$ 0</div>
+                        <span class="splitter">~</span>
+                        <div class="price-box-mono" id="priceDisplayMax">$ 1,500,000</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna 2: Filtro de Disponibilidad / Stock de tu Captura Fiel -->
+            <div class="drawer-filter-col">
+                <h3 class="filter-col-title">DISPONIBILIDAD <span class="arrow-indicator">»</span></h3>
+                <div class="checkbox-mono-group">
+                    <label class="container-checkbox-cyber">
+                        <input type="checkbox" class="filter-status-checkbox" value="Activo" checked>
+                        <span class="checkmark-cyber"></span> En existencia
+                    </label>
+                    <label class="container-checkbox-cyber">
+                        <input type="checkbox" class="filter-status-checkbox" value="Inactivo">
+                        <span class="checkmark-cyber"></span> AGOTADO
+                    </label>
+                </div>
+            </div>
+
+            <!-- Columna 3: Filtro de Tallas Urbanas Nativas -->
+            <div class="drawer-filter-col">
+                <h3 class="filter-col-title">TALLA <span class="arrow-indicator">»</span></h3>
+                <div class="checkbox-mono-group size-scroll-box">
+                    <label class="container-checkbox-cyber"><input type="checkbox" class="filter-size-checkbox" value="XS"><span class="checkmark-cyber"></span> XS</label>
+                    <label class="container-checkbox-cyber"><input type="checkbox" class="filter-size-checkbox" value="S"><span class="checkmark-cyber"></span> S</label>
+                    <label class="container-checkbox-cyber"><input type="checkbox" class="filter-size-checkbox" value="M"><span class="checkmark-cyber"></span> M</label>
+                    <label class="container-checkbox-cyber"><input type="checkbox" class="filter-size-checkbox" value="L" checked><span class="checkmark-cyber"></span> L</label>
+                    <label class="container-checkbox-cyber"><input type="checkbox" class="filter-size-checkbox" value="XL"><span class="checkmark-cyber"></span> XL</label>
+                    <label class="container-checkbox-cyber"><input type="checkbox" class="filter-size-checkbox" value="Unica"><span class="checkmark-cyber"></span> Talla Única</label>
+                </div>
+            </div>
+
+            <!-- Columna 4: Selectores Rápidos de Categoría Estilo Rejilla -->
+            <div class="drawer-filter-col">
+                <h3 class="filter-col-title">CATEGORIA <span class="arrow-indicator">»</span></h3>
+                <div class="category-buttons-cyber-grid">
+                    <button class="btn-cat-cyber active" type="button" data-category="todos">TODOS</button>
+                    <button class="btn-cat-cyber" type="button" data-category="camisetas">CAMISETAS</button>
+                    <button class="btn-cat-cyber" type="button" data-category="chaquetas">CHAQUETAS</button>
+                    <button class="btn-cat-cyber" type="button" data-category="pantalones">PANTALONES</button>
+                    <button class="btn-cat-cyber" type="button" data-category="calzado">CALZADO</button>
+                    <button class="btn-cat-cyber" type="button" data-category="accesorios">ACCESORIOS</button>
+                </div>
+                <div class="order-status-footer-text mt-3" id="orderStatusFooter">
+                    ORDEN ACTUAL: FECHA: RECIENTE A ANTIGUO(A)
+                </div>
+            </div>
+
+        </div>
+    </div> <!-- Cierre de cyber-filter-drawer-panel -->
+</div> <!-- Cierre del contenedor shop-page-wrapper superior -->
+
+<!-- ========================================================================== -->
+<!-- COLUMNA DERECHA: VITRINA STREETWEAR (REJILLA DE PRODUCTOS COMPACTA)         -->
+<!-- ========================================================================== -->
+<!-- CONTENEDOR ANCHO DE LA TIENDA pública -->
+<main class="shop-products-content-wide">
+    
+    <!-- 1. LA REJILLA DEBE ABRIRSE SIEMPRE PRIMERO -->
+    <div class="cyber-products-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; width: 100%;">
+        
+        <!-- 2. EL CONDICIONAL IF ENTRA AQUÍ ADENTRO -->
+        {% if productos %}
+            {% for producto in productos %}
+            <div class="shirry-catalog-card" 
+                 data-precio="{{ producto['precio'] }}" 
+                 data-categoria="{{ producto['categoria'] | lower if producto['categoria'] else 'textil' }}" 
+                 data-estado="{{ producto['estado'] | lower if producto['estado'] else 'activo' }}" 
+                 data-tallas="{{ producto['coleccion'] | lower if producto['coleccion'] else 'regular' }}"
+                 style="width: 100%; box-sizing: border-box;"> <!-- Forzamos a que respete el tamaño de la rejilla -->
+
+<!-- CÓDIGO SINCRO: REEMPLAZAR DESDE LA LÍNEA 139 HASTA LA 155 -->
+<div class="shirry-img-container">
+    <span class="shirry-brand-tag">SHIRRY CORE</span>
+    
+    <!-- 🔥 LÍNEA REPARADA: Enlace maestro dinámico que envuelve a la imagen principal -->
+    <a href="/shop/product/{{ producto['id'] }}" style="text-decoration: none; display: block; width: 100%;">
+        {% if producto['imagen'] %}
+            <!-- Centrado perfecto usando margin auto y proporciones nativas contain -->
+            <img src="{{ url_for('static', filename='imagenes/productos/' ~ producto['imagen']) }}" 
+                 alt="Prenda" 
+                 class="product-img-center" 
+                 style="display: block; margin: 0 auto; max-width: 90%; height: auto; max-height: 280px; object-fit: contain; padding-top: 15px;">
+        {% else %}
+            <img src="https://placeholder.com" 
+                 alt="Prenda" 
+                 class="product-img-center" 
+                 style="display: block; margin: 0 auto; max-width: 90%; height: auto; max-height: 280px; object-fit: contain; padding-top: 15px;">
+        {% endif %}
+    </a>
+
+    <!-- 🚨 INYECTA EL BOTÓN DE VISTA RÁPIDA EXACTAMENTE EN ESTA LÍNEA (159) -->
+    <button type="button" class="btn-quickview-temu" data-id="{{ producto['id'] }}">
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; display: inline-block; vertical-align: middle;">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        Vista rápida
+    </button>
+
+    <span class="shirry-stock-badge">DROP LIMITADO // {{ producto['estado'] | upper if producto['estado'] else 'ACTIVO' }}</span>
+</div>
+
+<div class="shirry-card-details">
+    <span class="shirry-product-category">{{ producto['categoria'] | upper if producto['categoria'] else 'TEXTIL' }}</span>
+    
+    <!-- 🔥 LÍNEA REPARADA: Enlace dinámico que envuelve al texto del título h3 -->
+<a href="/shop/product/{{ producto['id'] }}" style="text-decoration: none; color: inherit;">
+        <h3 class="shirry-product-title">{{ producto['nombre'] | upper }} // # {{ producto['id'] }}</h3>
+    </a>
+
+    <p class="shirry-product-sizes">COLECCIÓN DROPS: {{ producto['coleccion'] | upper if producto['coleccion'] else 'REGULAR' }}</p>
+
+                    <div class="shirry-prices-row">
+                        <div class="shirry-prices-box">
+                            <span class="shirry-current-price">$ {{ "{:,.0f}".format(producto['precio'] | float) }} COP</span>
+                        </div>
+                    </div>
+
+                    <form action="{{ url_for('agregar_al_carrito') }}" method="POST" style="display: inline-block; margin: 0; padding: 0; background: none; border: none;">
+    
+                        <!-- PASAPORTE DE DATOS ASÍNCRONO SEGURO -->
+                        <input type="hidden" name="id_producto" value="{{ producto['id'] }}">
+                        <input type="hidden" name="talla" value="ÚNICA">
+                        <input type="hidden" name="cantidad" value="1">
+    
+                    <!-- Botón Circular Premium que activa el script de main.js -->
+                    <button type="button" class="btn-add-to-cart-premium btn-trigger-qv" data-id="{{ producto['id'] }}" style="background: none; border: 1px solid #ffffff; color: #ffffff; width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;">
+        
+                    <!-- Ícono Vectorial Estilo SHEIN: Carrito con el Signo Más (+) integrado -->
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        <!-- Signo más (+) integrado en cian neón -->
+                        <line x1="12" y1="11" x2="16" y2="11" stroke="#00ffcc" stroke-width="2.5"></line>
+                        <line x1="14" y1="9" x2="14" y2="13" stroke="#00ffcc" stroke-width="2.5"></line>
+                        </svg>
+
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- Mensaje si no hay productos -->
+            <div style="grid-column: 1 / -1; text-align: center; padding: 100px 0; font-family: monospace; color: #888888;">
+                // EMISIONES FUERA DE LÍNEA. NO SE DETECTAN PRENDAS ACTIVAS EN EL DROPS ACTUAL.
+            </div>
+        {% endif %}
+
+    </div> <!-- 3. LA REJILLA SE CIERRA AL FINAL DE TODO EL FLUJO -->
+</main>
+
+
+
+<!-- ========================================================================== -->
+<!-- 3. SCRIPT ADMINISTRATIVO: MOTOR INTEGRADO DE FILTROS Y DESPLEGABLES (1/2)   -->
+<!-- ========================================================================== -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // --- Referencias del Panel Desplegable de Filtros ---
+    const btnFilterToggle = document.getElementById("btnFilterToggle");
+    const filterDrawer = document.getElementById("filterDrawer");
+
+    // --- Referencias del Menú de Ordenación Premium Custom ---
+    const sortDropdownTrigger = document.getElementById("sortDropdownTrigger");
+    const sortCustomMenu = document.getElementById("sortCustomMenu");
+    const sortOptionItems = document.querySelectorAll(".sort-option-item");
+
+    // --- Elementos de los Filtros de Stock ---
+    const searchInput = document.getElementById("cyberSearchInput");
+    const priceSlider = document.getElementById("priceRangeInput");
+    const priceDisplayMax = document.getElementById("priceDisplayMax");
+    const statusCheckboxes = document.querySelectorAll(".filter-status-checkbox");
+    const sizeCheckboxes = document.querySelectorAll(".filter-size-checkbox");
+    const categoryButtons = document.querySelectorAll(".btn-cat-cyber");
+    const hiddenSortInput = document.getElementById("cyberSortSelect");
+    const orderStatusFooter = document.getElementById("orderStatusFooter");
+
+    let activeCategory = "todos";
+
+    // 🚀 ANIMACIÓN CORE: Despliegue con cortina suave modificando clases CSS
+    if (btnFilterToggle && filterDrawer) {
+        btnFilterToggle.addEventListener("click", function() {
+            filterDrawer.classList.toggle("open");
+            
+            // Animación de rotación en la barra indicadora |
+            const lineIndicator = btnFilterToggle.querySelector(".filter-indicator-line");
+            if (lineIndicator) {
+                if (filterDrawer.classList.contains("open")) {
+                    lineIndicator.style.transform = "rotate(90deg)";
+                } else {
+                    lineIndicator.style.transform = "rotate(0deg)";
+                }
+            }
+        });
+    }
+
+    // --- Sistema del Menú de Ordenamiento Flotante ---
+    if (sortDropdownTrigger && sortCustomMenu) {
+        sortDropdownTrigger.addEventListener("click", function(e) {
+            e.stopPropagation();
+            sortCustomMenu.style.display = (sortCustomMenu.style.display === "none" || sortCustomMenu.style.display === "") ? "block" : "none";
+            
+            const arrow = sortDropdownTrigger.querySelector(".sort-arrow-indicator");
+            if (arrow) {
+                arrow.style.transform = (sortCustomMenu.style.display === "block") ? "rotate(180deg)" : "rotate(0deg)";
+            }
+        });
+
+        document.addEventListener("click", function() {
+            sortCustomMenu.style.display = "none";
+            const arrow = sortDropdownTrigger.querySelector(".sort-arrow-indicator");
+            if (arrow) arrow.style.transform = "rotate(0deg)";
+        });
+
+        sortOptionItems.forEach(function(item) {
+            item.addEventListener("click", function() {
+                sortOptionItems.forEach(i => i.classList.remove("active"));
+                item.classList.add("active");
+
+                const sortValue = item.getAttribute("data-sort");
+                if (hiddenSortInput) {
+                    hiddenSortInput.value = sortValue;
+                    hiddenSortInput.dispatchEvent(new Event("change"));
+                }
+
+                if (orderStatusFooter) {
+                    orderStatusFooter.textContent = `ORDEN ACTUAL: REQ_${item.textContent.replace("> ", "").trim().toUpperCase()}`;
+                }
+            });
+        });
+    }
+
+    // Escucha de clicks en la botonera de categorías moradas
+    categoryButtons.forEach(function(btn) {
+        btn.addEventListener("click", function() {
+            categoryButtons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            activeCategory = btn.getAttribute("data-category");
+            filterCatalogo();
+        });
+    });
+    // =========================================================================
+    // 4. MOTOR DE FILTRADO MULTI-VARIABLE EN TIEMPO REAL (TALLAS Y STOCK CASILLAS)
+    // =========================================================================
+    function filterCatalogo() {
+        const searchTerm = searchInput ? searchInput.value.trim().toLowerCase() : "";
+        const maxPrice = priceSlider ? parseFloat(priceSlider.value) : 1500000;
+        
+        if (priceDisplayMax && priceSlider) {
+            priceDisplayMax.textContent = `$ ${parseFloat(priceSlider.value).toLocaleString()}`;
+        }
+
+        // Recolectamos los estados marcados en tus casillas reales (Activo / Inactivo)
+        const activeStatuses = Array.from(statusCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.value.toLowerCase());
+
+        // Recolectamos las tallas marcadas en tus casillas reales (XS, S, M, L, XL, UNICA)
+        const activeSizes = Array.from(sizeCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.value.toLowerCase());
+
+        const productCards = document.querySelectorAll(".shirry-catalog-card");
+
+        productCards.forEach(function(card) {
+            // Leemos los metadatos inyectados desde Jinja de forma segura
+            const cardPrecio = parseFloat(card.getAttribute("data-precio")) || 0;
+            const cardCategoria = (card.getAttribute("data-categoria") || "").toLowerCase();
+            const cardEstado = (card.getAttribute("data-estado") || "activo").toLowerCase();
+            const cardTallas = (card.getAttribute("data-tallas") || "").toLowerCase();
+            
+            const titleElement = card.querySelector(".shirry-product-title") || card.querySelector("h3");
+            const titleText = titleElement ? titleElement.textContent.toLowerCase() : "";
+
+            // 1. Filtrado de barra de búsqueda por texto o botonera morada
+            const matchesSearch = titleText.includes(searchTerm) || cardCategoria.includes(searchTerm);
+            const matchesCategory = (activeCategory === "todos" || cardCategoria === activeCategory);
+            
+            // 2. Filtrado por rango de precios deslizante
+            const matchesPrice = cardPrecio <= maxPrice;
+
+            // 3. Filtrado por Disponibilidad (Existencia / Agotado)
+            const matchesStatus = activeStatuses.length === 0 || activeStatuses.includes(cardEstado);
+
+            // 4. Filtrado por Tallas Múltiples (Busca la letra dentro de la lista de la DB)
+            let matchesSize = activeSizes.length === 0;
+            if (!matchesSize) {
+                matchesSize = activeSizes.some(talla => cardTallas.includes(talla));
+            }
+
+            // Operación central de despliegue en la vitrina unificada
+            if (matchesSearch && matchesCategory && matchesPrice && matchesStatus && matchesSize) {
+                card.style.display = "flex";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    }
+
+    // --- Función de Reordenamiento Fiel en el DOM ---
+    function reordenarVitrina() {
+        const gridContainer = document.querySelector(".cyber-products-grid");
+        if (!gridContainer || !hiddenSortInput) return;
+
+        const sortValue = hiddenSortInput.value;
+        const productCards = Array.from(gridContainer.querySelectorAll(".shirry-catalog-card"));
+
+        productCards.sort(function(cardA, cardB) {
+            const priceElementA = cardA.querySelector(".shirry-current-price");
+            const priceElementB = cardB.querySelector(".shirry-current-price");
+            if (!priceElementA || !priceElementB) return 0;
+
+            const priceA = parseFloat(priceElementA.textContent.replace(/[$.COP,\s]/g, "")) || 0;
+            const priceB = parseFloat(priceElementB.textContent.replace(/[$.COP,\s]/g, "")) || 0;
+
+            if (sortValue === "precio-bajo") return priceA - priceB;
+            if (sortValue === "precio-alto") return priceB - priceA;
+            if (sortValue === "recientes") {
+                const idA = cardA.querySelector(".shirry-product-title")?.textContent || "";
+                const idB = cardB.querySelector(".shirry-product-title")?.textContent || "";
+                return idB.localeCompare(idA);
+            }
+            return 0;
+        });
+
+        productCards.forEach(card => gridContainer.appendChild(card));
+    }
+
+    // Conectamos los escuchadores de eventos para que actualicen la grilla en vivo
+    if (searchInput) searchInput.addEventListener("input", filterCatalogo);
+    if (priceSlider) priceSlider.addEventListener("input", filterCatalogo);
+    
+    statusCheckboxes.forEach(cb => cb.addEventListener("change", filterCatalogo));
+    sizeCheckboxes.forEach(cb => cb.addEventListener("change", filterCatalogo));
+
+    if (hiddenSortInput) {
+        hiddenSortInput.addEventListener("change", reordenarVitrina);
+    }
+});
+
+// =============================================================================
+// 5. INTERCEPCIÓN ASÍNCRONA DEL CARRITO DE COMPRAS (AJAX FETCH FLASK)
+// =============================================================================
+document.addEventListener("DOMContentLoaded", function() {
+    const addButtons = document.querySelectorAll(".shirry-btn-add-to-cart");
+    const cartSidebar = document.getElementById("cart-sidebar");
+    const cartOverlay = document.getElementById("cart-overlay");
+
+    addButtons.forEach(function(button) {
+        button.addEventListener('click', async (e) => {
+            e.preventDefault(); // Detiene la recarga brusca para conservar tu diseño
+
+            const btn = e.currentTarget;
+            const parentForm = btn.closest("form");
+            if (!parentForm) return;
+
+            // Captura los valores de los inputs ocultos del bucle Jinja
+            const idProducto = parentForm.querySelector('input[name="id_producto"]')?.value;
+            const nombre = parentForm.closest(".shirry-catalog-card")?.querySelector(".shirry-product-title")?.textContent || "Prenda SHIRRY";
+            const precio = parentForm.closest(".shirry-catalog-card")?.getAttribute("data-precio") || "0";
+            const talla = parentForm.querySelector('input[name="talla"]')?.value || "L";
+
+            if (!idProducto || !precio) {
+                console.error("[SISTEMA]: Error al capturar los metadatos del producto.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("id_producto", idProducto);
+            formData.append("nombre", nombre);
+            formData.append("precio", precio);
+            formData.append("talla", talla);
+
+            try {
+                // Apunta exactamente a tu ruta activa en tu app.py de Flask
+                const response = await fetch('/agregar_al_carrito', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    if (cartSidebar) {
+                        cartSidebar.classList.add("active");
+                        cartSidebar.classList.add("open");
+                    }
+                    if (cartOverlay) {
+                        cartOverlay.classList.add("active");
+                        cartOverlay.classList.add("open");
+                    }
+                    window.location.reload(); // Recarga sutil para actualizar el contador máster
+                } else {
+                    console.error("[SISTEMA]: La terminal rechazó la petición del artículo.");
+                }
+            } catch (error) {
+                console.error("[SISTEMA]: Error de red con el servidor Flask:", error);
+            }
+        });
+    });
+});
+
+
+
+<!-- 🚀 SCRIPT DEFINITIVO: UNIFICA EL COMPORTAMIENTO ASÍNCRONO Y EL CAMBIO DE VISTA -->
+
+document.addEventListener("DOMContentLoaded", function () {
+    const trigger = document.getElementById("sortDropdownTrigger");
+    const customMenu = document.getElementById("sortCustomMenu");
+    const optionItems = document.querySelectorAll(".sort-option-item");
+    const gridProductos = document.querySelector(".products-shop-grid") || document.querySelector("[class*='grid']");
+
+    // ==========================================================================
+    // ⚙️ SECCIÓN NUEVA INCLUIDA: CONTROL DE VISTA (CUADRÍCULA / LISTA)
+    // ==========================================================================
+    // Seleccionamos tus dos botones de vista por sus clases y selectores limpios
+    const btnGrid = document.querySelector(".btn-view[title='Cuadrícula']") || document.querySelector(".filter-view-modes button:first-of-type");
+    const btnList = document.querySelector(".btn-view[title='Lista']") || document.querySelector(".filter-view-modes button:last-of-type");
+
+    if (btnGrid && btnList && gridProductos) {
+        // Clic en el botón de Lista ☰: añade la clase que reordena las tarjetas en horizontal
+        btnList.addEventListener("click", function () {
+            btnGrid.classList.remove("active");
+            btnList.classList.add("active");
+            gridProductos.classList.add("view-mode-list");
+        });
+
+        // Clic en el botón de Cuadrícula ☷: quita la clase regresando al bento de 3 columnas
+        btnGrid.addEventListener("click", function () {
+            btnList.classList.remove("active");
+            btnGrid.classList.add("active");
+            gridProductos.classList.remove("view-mode-list");
+        });
+    }
+
+    // ==========================================================================
+    // 🎛️ TU LOGICA ANTERIOR MANTENIDA EXACTAMENTE IGUAL (MENÚ Y FETCH ASÍNCRONO)
+    // ==========================================================================
+    if (trigger && customMenu) {
+        // 1. Alternar menú con animación fluida
+        trigger.addEventListener("click", function (e) {
+            e.stopPropagation();
+            customMenu.classList.toggle("show");
+        });
+
+        document.addEventListener("click", function () {
+            customMenu.classList.remove("show");
+        });
+
+        // 2. Clic en las opciones: Ordenamiento en tiempo real por AJAX
+        optionItems.forEach(item => {
+            item.addEventListener("click", function () {
+                const valorSeleccionado = this.getAttribute("data-sort");
+
+                optionItems.forEach(i => i.classList.remove("active"));
+                this.classList.add("active");
+
+                const url = new URL(window.location.href);
+                url.searchParams.set("ordenar", valorSeleccionado);
+
+                fetch(url.toString(), {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, "text/html");
+                    const nuevaGrilla = doc.querySelector(".products-shop-grid") || doc.querySelector("[class*='grid']");
+                    
+                    if (nuevaGrilla && gridProductos) {
+                        gridProductos.innerHTML = nuevaGrilla.innerHTML;
+                        
+                        // 🚀 DETALLE PREMIUM: Si el usuario estaba en vista LISTA, mantiene los estilos al reordenar
+                        if (btnList.classList.contains("active")) {
+                            gridProductos.classList.add("view-mode-list");
+                        }
+                    }
+                })
+                .catch(error => console.error("Error al ordenar de forma asíncrona:", error));
+            });
+        });
+    }
+});
+
+
+</script>
+
+{% endblock %}

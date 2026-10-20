@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Carga forzada del CSS industrial de SHIRRY CORE -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/carrito.css') }}">
+
+<!-- Contenedor Principal del Carrito -->
+<div class="sc-cart-viewport">
+ 
+    <!-- BANNER DE ENCABEZADO Y CONTROL GLOBAL -->
+    <div class="sc-cart-header">
+        <h1 class="sc-cart-title">[ CARRO_DE_COMPRAS ]</h1>
+        <div class="sc-cart-alert-banner">
+            <span class="sc-alert-ico">//</span> 
+            <p>ENVÍO GRATIS STREETWEAR ACTIVO EN TODOS LOS ARTÍCULOS DE TU SESIÓN</p>
+        </div>
+        <div class="sc-global-counter">
+            <span>TODOS LOS ARTÍCULOS ({{ productos_carrito|length }})</span>
+        </div>
+    </div>
+
+    {% if not productos_carrito %}
+        <!-- ESTADO VACÍO -->
+        <div class="sc-cart-empty">
+            <p class="sc-empty-msg">EL CARRITO ESTÁ VACÍO // NO SE DETECTARON REGISTROS EN LA SESIÓN</p>
+            <a href="/shop" class="sc-btn-terminal">VOLVER A LA VITRINA</a>
+        </div>
+    {% else %}
+        <!-- CONTENEDOR DE DOS COLUMNAS (Estilo Referencias) -->
+        <div class="sc-cart-layout" style="display: flex !important; flex-direction: row !important; gap: 30px !important; align-items: flex-start !important; width: 100% !important; max-width: 1200px !important; margin: 0 auto !important; box-sizing: border-box !important;">
+            
+            <!-- COLUMNA IZQUIERDA: LISTA DE ARTÍCULOS -->
+            <div class="sc-products-column" style="flex: 0 0 65%; box-sizing: border-box;">
+                {% for item in productos_carrito %}
+                    <div class="sc-cart-item-row">
+                        
+                        <!-- Miniatura de Prenda Blindada -->
+                        <div class="sc-item-thumb-box">
+                            <img src="{{ url_for('static', filename='imagenes/productos/' ~ item['imagen']) }}" 
+                                 style="display: block; margin: 0 auto; width: auto; height: 100%; max-height: 110px; object-fit: contain; box-sizing: border-box;" 
+                                 alt="{{ item['nombre'] }}">
+                        </div>
+
+                        <!-- Detalles Técnicos del Producto -->
+                        <div class="sc-item-details">
+                            <h3 class="sc-item-name">{{ item['nombre'] }}</h3>
+                            <div class="sc-item-meta">
+                                <span class="sc-meta-tag">TALLA: <strong class="sc-neon-text">{{ item['talla'] }}</strong></span>
+                                <span class="sc-meta-status">// DISPONIBLE</span>
+                            </div>
+                            <div class="sc-item-price-block">
+                                <span class="sc-current-price">${{ "{:,.0f}".format(item['precio']) }}</span>
+                            </div>
+                        </div>
+
+<!-- Selectores de Control de Fila -->
+<div class="sc-item-controls">
+    <div class="sc-control-group">
+        <label>CANT:</label>
+        <select class="sc-terminal-select" data-clave="{{ item['clave_carrito'] }}">
+            {% for i in range(1, 6) %}
+                <option value="{{ i }}" {% if item['cantidad'] == i %}selected{% endif %}>{{ i }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <!-- Subtotal y Botón de Eliminación -->
+    <div class="sc-item-actions">
+        <span class="sc-item-subtotal">${{ "{:,.0f}".format(item['subtotal']) }}</span>
+        <a href="/eliminar_del_carrito/{{ item['clave_carrito'] }}" class="sc-action-remove" title="Eliminar artículo">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+            <span>[ REMOVER ]</span>
+        </a>
+    </div>
+</div>
+</div>
+                {% endfor %}
+            </div>
+
+            <!-- COLUMNA DERECHA: PANEL DE RESUMEN FIJO (STICKY) -->
+            <div class="sc-summary-column" style="flex: 0 0 35%; box-sizing: border-box; position: sticky; top: 100px;">
+                <div class="sc-summary-sticky-card">
+                    <h2 class="sc-summary-title">RESUMEN DEL PEDIDO</h2>
+                    
+                    <div class="sc-summary-rows">
+                        <div class="sc-summary-line">
+                            <span>Total de artículos:</span>
+                            <span>{{ productos_carrito|length }}</span>
+                        </div>
+                        <div class="sc-summary-line">
+                            <span>Descuentos aplicados:</span>
+                            <span class="sc-neon-text">-$0</span>
+                        </div>
+                        <div class="sc-summary-line">
+                            <span>Envío:</span>
+                            <span class="sc-neon-cyan">GRATIS</span>
+                        </div>
+                        <div class="sc-summary-total-line">
+                            <span>TOTAL:</span>
+                            <span class="sc-total-price">${{ "{:,.0f}".format(total) }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Botón de Pago Principal de Alta Conversión -->
+                    <a href="/checkout" class="sc-btn-checkout">
+                        PAGAR AHORA ({{ productos_carrito|length }})
+                    </a>
+
+                    <!-- Bloque de Confianza de Pasarela -->
+                    <div class="sc-trust-footer">
+                        <p class="sc-trust-text">// TU COMPRA ESTÁ PROTEGIDA BAJO PROTOCOLO SSL</p>
+                        <div class="sc-payment-badges">
+                            <span>VISA</span>
+                            <span>MASTERCARD</span>
+                            <span>AMEX</span>
+                            <span>EFECTY</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    {% endif %}
+</div>
+
+<script>
+document.querySelectorAll('.sc-terminal-select').forEach(select => {
+    select.addEventListener('change', function() {
+        const clave = this.getAttribute('data-clave');
+        const cantidad = this.value;
+        window.location.href = `/actualizar_carrito/${clave}/${cantidad}`;
+    });
+});
+</script>
+
+{% endblock %}

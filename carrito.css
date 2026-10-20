@@ -1,0 +1,386 @@
+/* ==========================================================================
+   SHIRRY CORE - SISTEMA DE CARRO DE COMPRAS INDUSTRIAL
+   ========================================================================== */
+
+.sc-cart-viewport {
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* BANNER DE ENCABEZADO */
+.sc-cart-header {
+    margin-bottom: 30px;
+}
+
+.sc-cart-title {
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin: 0 0 15px 0;
+    color: #ffffff;
+    text-shadow: 2px 2px #00ffcc;
+}
+
+.sc-cart-alert-banner {
+    background: rgba(0, 255, 204, 0.05);
+    border: 1px solid #00ffcc;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.sc-alert-ico {
+    color: #00ffcc;
+    font-weight: bold;
+    animation: blink 1s infinite;
+}
+
+.sc-cart-alert-banner p {
+    margin: 0;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.sc-global-counter {
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* DISEÑO DE DOS COLUMNAS REPARADO AL 100% */
+.sc-cart-layout {
+    display: grid !important;
+    grid-template-columns: 63% 37% !important; /* Divide la pantalla exacta en dos celdas */
+    gap: 30px !important;
+    align-items: start !important;
+    width: 100% !important;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* LA CLASE AUXILIAR QUE LE DA EL ANCLAJE FLOTANTE A TU TARJETA NEGRA */
+.sc-summary-column {
+    width: 100% !important;
+    box-sizing: border-box;
+    position: sticky !important; /* Se queda fija de forma premium al hacer scroll */
+    top: 90px !important;        /* Margen de seguridad para no chocar con tu Navbar */
+}
+
+@media (max-width: 992px) {
+    .sc-cart-layout {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+
+
+/* FILAS DE PRODUCTOS */
+.sc-products-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sc-cart-item-row {
+    display: grid;
+    grid-template-columns: 130px 1fr auto;
+    background: rgba(10, 10, 10, 0.85);
+    border: 1px solid #222;
+    padding: 15px;
+    align-items: center;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
+.sc-cart-item-row:hover {
+    border-color: #ff0055;
+}
+
+/* Caja contenedora blindada */
+.sc-item-thumb-box {
+    width: 110px;
+    height: 110px;
+    background: #111111;
+    border: 1px solid #333;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Detalles */
+.sc-item-details {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sc-item-name {
+    margin: 0;
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 400px;
+}
+
+.sc-item-meta {
+    font-size: 0.8rem;
+    color: #666;
+    display: flex;
+    gap: 15px;
+}
+
+.sc-neon-text {
+    color: #ff0055;
+}
+
+.sc-neon-cyan {
+    color: #00ffcc;
+}
+
+.sc-item-price-block {
+    margin-top: 5px;
+}
+
+.sc-current-price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Controles de Fila */
+.sc-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.sc-control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.sc-terminal-select {
+    background: #000000;
+    border: 1px solid #444;
+    color: #00ffcc;
+    padding: 6px 12px;
+    font-family: monospace;
+    outline: none;
+    cursor: pointer;
+}
+
+.sc-terminal-select:focus {
+    border-color: #00ffcc;
+}
+
+.sc-item-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    min-width: 120px;
+}
+
+.sc-item-subtotal {
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: #00ffcc;
+}
+
+.sc-action-remove {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #555;
+    text-decoration: none;
+    font-size: 0.75rem;
+    transition: color 0.2s ease;
+}
+
+.sc-action-remove:hover {
+    color: #ff0055;
+}
+
+/* COLUMNA RESUMEN STICKY */
+.sc-summary-sticky-card {
+    background: #0d0d0d;
+    border: 1px solid #333;
+    padding: 25px;
+    position: sticky;
+    top: 100px; /* Desplazamiento para no chocar con tu Navbar Cyberpunk */
+    box-sizing: border-box;
+}
+
+.sc-summary-title {
+    margin: 0 0 20px 0;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #222;
+    padding-bottom: 12px;
+    color: #ffffff;
+}
+
+.sc-summary-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.sc-summary-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+.sc-summary-total-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px dashed #444;
+    padding-top: 15px;
+    margin-top: 5px;
+    font-size: 1.05rem;
+    font-weight: bold;
+}
+
+.sc-total-price {
+    font-size: 1.4rem;
+    color: #ff0055;
+    text-shadow: 0 0 5px rgba(255, 0, 85, 0.2);
+}
+
+/* BOTÓN DE CHECKOUT INDUSTRIAL */
+.sc-btn-checkout {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: #ff0055;
+    color: #ffffff;
+    border: none;
+    padding: 15px 0;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 4px 0px #990033;
+    box-sizing: border-box;
+}
+
+.sc-btn-checkout:hover {
+    background: #ff1a6c;
+}
+
+.sc-btn-checkout:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0px #990033;
+}
+
+/* FOOTER DE CONFIANZA */
+.sc-trust-footer {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.sc-trust-text {
+    font-size: 0.65rem;
+    color: #444;
+    margin: 0 0 10px 0;
+    letter-spacing: 0.5px;
+}
+
+.sc-payment-badges {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    font-size: 0.7rem;
+    color: #666;
+    font-weight: bold;
+}
+
+/* ESTADO VACÍO */
+.sc-cart-empty {
+    text-align: center;
+    padding: 80px 0;
+    border: 1px dashed #333;
+    background: rgba(5, 5, 5, 0.5);
+}
+
+.sc-empty-msg {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 25px;
+}
+
+.sc-btn-terminal {
+    display: inline-block;
+    border: 1px solid #00ffcc;
+    color: #00ffcc;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: background 0.2s ease;
+}
+
+.sc-btn-terminal:hover {
+    background: rgba(0, 255, 204, 0.1);
+}
+
+/* ANIMACIONES */
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* ==========================================================================
+   UNIFICACIÓN MAESTRA DE DOS COLUMNAS - BLOQUEO DE INTERFERENCIAS (SHIRRY)
+   ========================================================================= */
+.sc-cart-layout {
+    display: grid !important;
+    grid-template-columns: 63% 37% !important; /* Divide la pantalla en dos celdas simétricas */
+    gap: 30px !important;
+    align-items: start !important;
+    width: 100% !important;
+    max-width: 1300px !important;
+    margin: 30px auto !important;
+    box-sizing: border-box !important;
+}
+
+/* Columna Izquierda: Lista de Ropa */
+.sc-products-column {
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Columna Derecha: Contenedor del Resumen Fijo (SANEADO SIN 100%) */
+.sc-summary-column {
+    box-sizing: border-box !important; 
+    position: sticky !important;       /* Se queda fija de forma premium al bajar el scroll */
+    top: 100px !important;             /* Margen para que no se tape con tu Navbar Cyberpunk */
+}
+
+@media (max-width: 992px) {
+    .sc-cart-layout {
+        grid-template-columns: 1fr !important; /* En celulares se vuelve a apilar verticalmente */
+    }
+}

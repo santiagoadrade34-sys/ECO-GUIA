@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+
+<div class="sc-checkout-wrapper">    
+    <!-- TÍTULO DE CONTROL TÁCTICO -->
+    <h1 class="sc-checkout-title">// PROCESO_DE_PAGO_NÚCLEO</h1>
+
+    <div class="sc-checkout-layout">
+        
+        <!-- COLUMNA IZQUIERDA: FORMULARIO DE ENVÍO Y FACTURACIÓN -->
+        <div class="sc-billing-column">
+            <form action="{{ url_for('procesar_orden') }}" method="POST" id="checkout-form">
+                
+                <!-- SECCIÓN 1: DATOS DEL CLIENTE -->
+                <h2 class="sc-checkout-subtitle">INFORMACIÓN_DEL_DESTINATARIO</h2>
+                
+                <div class="sc-form-flex-row">
+                    <div class="sc-form-group">
+                        <label for="inp-nombres">NOMBRES *</label>
+                        <input type="text" name="nombres" id="inp-nombres" class="sc-checkout-input" required>
+                    </div>
+                    <div class="sc-form-group">
+                        <label for="inp-apellidos">APELLIDOS *</label>
+                        <input type="text" name="apellidos" id="inp-apellidos" class="sc-checkout-input" required>
+                    </div>
+                </div>
+
+                <div class="sc-form-flex-row">
+                    <div class="sc-form-group">
+                        <label for="inp-email">CORREO ELECTRÓNICO *</label>
+                        <input type="email" name="email" id="inp-email" class="sc-checkout-input" required>
+                    </div>
+                    <div class="sc-form-group">
+                        <label for="inp-telefono">TELÉFONO / CELULAR *</label>
+                        <input type="tel" name="telefono" id="inp-telefono" class="sc-checkout-input" required>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 2: DIRECCIÓN DE DESPACHO -->
+                <h2 class="sc-checkout-subtitle">LOGÍSTICA_DE_DESPACHO</h2>
+
+                <div class="sc-form-flex-row">
+                    <div class="sc-form-group">
+                        <label for="inp-depto">DEPARTAMENTO *</label>
+                        <input type="text" name="departamento" id="inp-depto" class="sc-checkout-input" placeholder="Ej: Cundinamarca" required>
+                    </div>
+                    <div class="sc-form-group">
+                        <label for="inp-ciudad">CIUDAD *</label>
+                        <input type="text" name="ciudad" id="inp-ciudad" class="sc-checkout-input" placeholder="Ej: Bogotá" required>
+                    </div>
+                </div>
+
+                <div class="sc-form-group-full">
+                    <div class="sc-form-group">
+                        <label for="inp-direccion">DIRECCIÓN DE RESIDENCIA *</label>
+                        <input type="text" name="direccion" id="inp-direccion" class="sc-checkout-input" placeholder="Calle, Carrera, Número de Casa o Apto" required>
+                    </div>
+                </div>
+
+                <div class="sc-form-group-full" style="margin-bottom: 0;">
+                    <div class="sc-form-group">
+                        <label for="inp-notas">NOTAS ADICIONALES (OPCIONAL)</label>
+                        <textarea name="notas" id="inp-notas" rows="3" class="sc-checkout-textarea" placeholder="Indicaciones para la transportadora..."></textarea>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- COLUMNA DERECHA: RESUMEN Y BOTÓN PRINCIPAL -->
+        <div class="sc-checkout-summary">
+            <h2 class="sc-checkout-subtitle" style="border-bottom: 1px dashed #222; padding-bottom: 10px; margin-bottom: 25px;">
+                RESUMEN_DE_CARGA
+            </h2>
+
+            <div class="sc-checkout-items-list">
+                {% for item in productos_carrito %}
+                <div class="sc-checkout-item-line">
+                    <div>
+                        <span class="sc-item-line-name">{{ item['nombre'] }}</span>
+                        <span class="sc-item-line-meta">CANT: <strong>{{ item['cantidad'] }}</strong> // TALLA: {{ item['talla'] }}</span>
+                    </div>
+                    <span class="sc-item-line-subtotal">${{ "{:,.0f}".format(item['subtotal']) }}</span>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="sc-checkout-pricing-block">
+                <div class="sc-pricing-row">
+                    <span>Subtotal del envío:</span>
+                    <span style="color: #ffffff;">{{ productos_carrito|length }} ítems</span>
+                </div>
+                <div class="sc-pricing-row-flete">
+                    <span>Flete transportadora:</span>
+                    <span>GRATIS</span>
+                </div>
+                
+                <div class="sc-pricing-row-total">
+                    <span>TOTAL A PAGAR:</span>
+                    <span class="sc-pricing-total-amount">${{ "{:,.0f}".format(total) }}</span>
+                </div>
+            </div>
+
+            <!-- BOTÓN QUE DISPARA LA FACTURA EN PANTALLA -->
+            <button type="button" id="sc-btn-trigger-pay" class="sc-btn-submit-order">
+                CONFIRMAR Y FINALIZAR ORDEN //
+            </button>
+
+            <div class="sc-checkout-trust-footer">
+                * AL PROCESAR ACEPTAS LOS TÉRMINOS DE DROP DE SHIRRY CORE.<br>
+                PASARELA CIFRADA BAJO ENCRIPTACIÓN CODO SSL.
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ==========================================================================
+     MODAL DE FACTURA EN PANTALLA
+     ========================================================================== -->
+<div id="sc-invoice-modal-overlay" class="sc-modal-overlay" style="display: none;">
+    <div class="sc-modal-container">
+        
+        <!-- BARRA DE ACCIONES DEL VISOR -->
+        <div class="sc-modal-actions no-print">
+            <button type="button" id="sc-btn-print-action" class="sc-btn-action-print">
+                🖨️ IMPRIMIR / GUARDAR PDF
+            </button>
+            <button type="button" id="sc-btn-send-backend" class="sc-btn-action-confirm">
+                ENVIAR Y FINALIZAR ➔
+            </button>
+            <button type="button" id="sc-btn-close-modal" class="sc-btn-action-close">
+                ✕ CERRAR
+            </button>
+        </div>
+
+        <!-- HOJA DE FACTURA INDUSTRIAL (FORMATO EXACTO A LA IMAGEN) -->
+        <div id="sc-printable-invoice" class="sc-invoice-sheet">
+            
+            <!-- ENCABEZADO: LOGO + DATOS DE EMPRESA -->
+            <div class="inv-header-grid">
+                <div class="inv-header-logo">
+                    <span class="inv-logo-text">Shirry</span>
+                </div>
+                <div class="inv-header-company">
+                    <div class="inv-company-title">NOMBRE DE LA EMPRESA</div>
+                    <div class="inv-company-sub">NOMBRE DEL PROVEEDOR</div>
+                    <div class="inv-company-sub">DIRECCIÓN</div>
+                </div>
+            </div>
+
+            <!-- FILA DE FECHA Y HORA -->
+            <div class="inv-datetime-grid">
+                <div class="inv-cell-date">
+                    <span class="inv-label">FECHA DE PEDIDO:</span>
+                    <span id="print-date" class="inv-value"></span>
+                </div>
+                <div class="inv-cell-time">
+                    <span class="inv-label">HORA:</span>
+                    <span id="print-time" class="inv-value"></span>
+                </div>
+            </div>
+
+            <!-- TABLA DE PRODUCTOS -->
+            <table class="inv-table">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">CÓDIGO DEL PRODUCTO</th>
+                        <th style="width: 45%;">DESCRIPCIÓN</th>
+                        <th style="width: 17%;">VLR UNITARIO</th>
+                        <th style="width: 18%;">VLR TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in productos_carrito %}
+                    <tr>
+                        <td class="text-center">{{ item.get('codigo', loop.index) }}</td>
+                        <td>{{ item['nombre'] }} (TALLA: {{ item['talla'] }}, CANT: {{ item['cantidad'] }})</td>
+                        <td class="text-right">${{ "{:,.0f}".format(item.get('precio', item['subtotal'] / item['cantidad'])) }}</td>
+                        <td class="text-right">${{ "{:,.0f}".format(item['subtotal']) }}</td>
+                    </tr>
+                    {% endfor %}
+
+                    <!-- FILAS VACÍAS DE RELLENO -->
+                    {% for i in range(4) %}
+                    <tr class="inv-empty-row">
+                        <td>&nbsp;</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" rowspan="3" class="inv-blank-cell">
+                            <div class="inv-customer-meta">
+                                <strong>DESTINATARIO:</strong> <span id="lbl-nombre-completo"></span><br>
+                                <strong>DIRECCIÓN:</strong> <span id="lbl-direccion-completa"></span><br>
+                                <strong>CONTACTO:</strong> <span id="lbl-contacto"></span>
+                            </div>
+                        </td>
+                        <td class="inv-total-label">VALOR NETO</td>
+                        <td class="inv-total-val">${{ "{:,.0f}".format(total) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="inv-total-label">IVA</td>
+                        <td class="inv-total-val">$0</td>
+                    </tr>
+                    <tr>
+                        <td class="inv-total-label">VALOR TOTAL</td>
+                        <td class="inv-total-val">${{ "{:,.0f}".format(total) }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================================
+     SCRIPT DE INTERACCIÓN
+     ========================================================================== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('checkout-form');
+    const modal = document.getElementById('sc-invoice-modal-overlay');
+    const btnTrigger = document.getElementById('sc-btn-trigger-pay');
+    const btnClose = document.getElementById('sc-btn-close-modal');
+    const btnPrint = document.getElementById('sc-btn-print-action');
+    const btnSend = document.getElementById('sc-btn-send-backend');
+
+    // Al dar clic en 'Confirmar y Finalizar', valida y muestra la factura en pantalla
+    btnTrigger.addEventListener('click', () => {
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        const nombres = form.querySelector('input[name="nombres"]').value;
+        const apellidos = form.querySelector('input[name="apellidos"]').value;
+        const email = form.querySelector('input[name="email"]').value;
+        const telefono = form.querySelector('input[name="telefono"]').value;
+        const depto = form.querySelector('input[name="departamento"]').value;
+        const ciudad = form.querySelector('input[name="ciudad"]').value;
+        const direccion = form.querySelector('input[name="direccion"]').value;
+
+        // Inyectar datos en la factura
+        document.getElementById('lbl-nombre-completo').textContent = `${nombres.toUpperCase()} ${apellidos.toUpperCase()}`;
+        document.getElementById('lbl-contacto').textContent = `${email} | TEL: ${telefono}`;
+        document.getElementById('lbl-direccion-completa').textContent = `${direccion.toUpperCase()}, ${ciudad.toUpperCase()} (${depto.toUpperCase()})`;
+        
+        const fecha = new Date();
+        document.getElementById('print-date').textContent = fecha.toLocaleDateString('es-CO');
+        document.getElementById('print-time').textContent = fecha.toLocaleTimeString('es-CO');
+
+        // Mostrar el modal
+        modal.style.display = 'flex';
+    });
+
+    // Cerrar modal
+    btnClose.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Botón de imprimir
+    btnPrint.addEventListener('click', () => {
+        window.print();
+    });
+
+    // Enviar datos al backend
+    btnSend.addEventListener('click', () => {
+        btnSend.disabled = true;
+        btnSend.textContent = 'PROCESANDO...';
+        form.submit();
+    });
+});
+</script>
+{% endblock %}

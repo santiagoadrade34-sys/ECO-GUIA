@@ -1,0 +1,96 @@
+<!-- MÓDULO: CARRITO DESPLEGABLE LATERAL (TICKET TÉRMICO ORIGINAL) -->
+<div class="cart-overlay"></div>
+
+<div class="cart-sidebar" style="font-family: 'Courier New', monospace;">
+    
+    <!-- ENCABEZADO (Imagen 1) -->
+    <div class="cart-sidebar-header">
+        <h2 style="margin: 0; font-family: inherit; color: #ffffff;">[ CONTROL_CAJA ]</h2>
+        <button class="close-cart">[X]</button>
+    </div>
+
+    <!-- ÁREA INTERNA CON SCROLL (Imagen 2) -->
+    <div class="invoice-scroll-area">
+        
+        <!-- METADATOS TÉRMICOS (Imagen 2) -->
+        <div class="invoice-header">
+            <span class="invoice-brand">SHIRRY CORE // STUDIO_SYS</span><br>
+            <span>LARAGON LOCALHOST // CORE ACTIVE</span><br>
+            <span>====================================</span>
+        </div>
+
+        <div class="invoice-columns">
+            <span>CONCEPTO // VAR</span>
+            <span>SUBTOTAL</span>
+        </div>
+
+<!-- BUCLE DE PRODUCTOS CON SINTAXIS DE CORCHETES OBLIGATORIA (CORREGIDO SIN COMPORTAMIENTO EN LÍNEA) -->
+<div id="sidebar-items-container">
+    {% if not productos_carrito %}
+        <p style="color: #444444; text-align: center; padding: 30px 0; font-size: 0.8rem;">// NO SE DETECTARON REGISTROS EN CAJA</p>
+    {% else %}
+        {% for item in productos_carrito %}
+            <div class="cart-item">
+                <div class="cart-item-header">
+                    <h3>{{ item['nombre'] }}</h3>
+                    <!-- Eliminado onclick en línea, usamos clase de control y data-attributes -->
+                    <button class="btn-remove-item sc-sidebar-remove-btn" data-clave="{{ item['clave_carrito'] }}">[ REMOVER ]</button>
+                </div>
+                
+                <div class="cart-item-variant">
+                    <span>TALLA: {{ item['talla'] }}</span>
+                </div>
+
+                <div class="cart-item-actions">
+                    <!-- SELECTOR DE CANTIDAD -->
+                    <div class="qty-selector">
+                        <button class="qty-btn sc-sidebar-qty-btn" data-clave="{{ item['clave_carrito'] }}" data-nueva-qty="{{ item['cantidad'] - 1 }}">-</button>
+                        <span class="qty-number">{{ item['cantidad'] }}</span>
+                        <button class="qty-btn sc-sidebar-qty-btn" data-clave="{{ item['clave_carrito'] }}" data-nueva-qty="{{ item['cantidad'] + 1 }}">+</button>
+                    </div>
+                    <!-- PRECIO -->
+                    <span class="item-price">${{ "{:,.0f}".format(item['subtotal']) }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+
+        <!-- PIE DE FACTURA TÉRMICA (Imagen 2 y 4) -->
+        <div class="invoice-footer">
+            <span>====================================</span><br>
+            <div class="total-line">
+                <span>TOTAL ESTIMADO:</span>
+                <span style="color: #00ffcc;">${{ "{:,.0f}".format(total) }}</span>
+            </div>
+            <span>GRACIAS POR INTERACTUAR CON EL NÚCLEO</span>
+        </div>
+    </div>
+
+    <!-- BOTÓN DE CHECKOUT ORIGINAL (Imagen 4) -->
+    <button class="btn-checkout" onclick="window.location.href='/checkout'" style="margin-top: auto;">
+        PROCEDER AL PAGO_
+    </button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Control de los botones de cambiar cantidad (+ / -)
+    document.querySelectorAll('.sc-sidebar-qty-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const clave = this.getAttribute('data-clave');
+            const nuevaQty = this.getAttribute('data-nueva-qty');
+            window.location.href = `/actualizar_carrito/${clave}/${nuevaQty}`;
+        });
+    });
+
+    // 2. Control de los botones de remover artículo
+    document.querySelectorAll('.sc-sidebar-remove-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const clave = this.getAttribute('data-clave');
+            window.location.href = `/eliminar_del_carrito/${clave}`;
+        });
+    });
+});
+</script>

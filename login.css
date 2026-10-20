@@ -1,0 +1,636 @@
+/* ==========================================================================
+   ESTILOS GENERALES DE LA PÁGINA Y MARCA
+   ========================================================================== */
+.login-page {
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    
+    /* CONFIGURACIÓN DE TU IMAGEN DE FONDO */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('../imagenes/fondos/fondo_registro.jpg');
+    background-size: cover;        /* Fuerza a la imagen a cubrir toda la pantalla sin deformarse */
+    background-position: center;   /* Centra la imagen para que siempre se vea el medio */
+    background-repeat: no-repeat;  /* Evita que la imagen se duplique en mosaico */
+    background-attachment: fixed;  /* Mantiene el fondo estático si el usuario hace scroll */
+}
+
+
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.brand-header {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.brand-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.8rem;
+    letter-spacing: 4px;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(137, 41, 255, 0.4);
+    transition: color 0.3s ease;
+}
+
+.brand-link:hover {
+    color: #8929ff;
+}
+
+/* ==========================================================================
+   CONTENEDOR ANIMADO DESLIZANTE (ESTRUCTURA PRINCIPAL)
+   ========================================================================== */
+.container {
+    background-color: #0a0a0a;
+    border: 1px solid #222222;
+    position: relative;
+    width: 100%;
+    max-width: 768px;
+    min-height: 480px;
+    height: auto;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+    display: flex;
+    overflow: hidden; /* Oculta los paneles que se desplazan hacia afuera */
+}
+
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.sign-in-container {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.sign-up-container {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+/* Movimientos mecánicos cuando la pestaña de registro está activa */
+.container.right-panel-active .sign-in-container {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.container.right-panel-active .sign-up-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: show 0.6s;
+}
+
+@keyframes show {
+    0%, 49.99% { opacity: 0; z-index: 1; }
+    50%, 100% { opacity: 1; z-index: 5; }
+}
+
+/* ==========================================================================
+   FORMULARIOS INTERNOS Y CAMPOS DE TEXTO
+   ========================================================================== */
+form {
+    background-color: #0a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px 35px;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    gap: 12px;
+}
+
+form h1 {
+    color: #ffffff;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    margin: 0 0 15px 0;
+    text-transform: uppercase;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    text-align: left;
+}
+
+.form-group label {
+    color: #555555;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    background-color: #000000;
+    border: 1px solid #222222;
+    padding: 12px;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    border-color: #8929ff;
+}
+
+.form-link {
+    color: #555555;
+    font-size: 0.75rem;
+    text-decoration: none;
+    letter-spacing: 1px;
+    margin: 5px 0;
+    transition: color 0.2s ease;
+}
+
+.form-link:hover {
+    color: #ffffff;
+}
+/* ==========================================================================
+   BOTONES
+   ========================================================================== */
+.btn-primary {
+    background-color: #f5f5f5;
+    color: #000000;
+    border: none;
+    padding: 14px;
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    text-transform: uppercase;
+}
+
+.btn-primary:hover {
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
+.btn-ghost {
+    background: none;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    padding: 12px 30px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.btn-ghost:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* ==========================================================================
+   CAPA INTERMEDIA DE MOVIMIENTO (OVERLAY GRADIENTE)
+   ========================================================================== */
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 100;
+    border-left: 1px solid #222222;
+}
+
+.container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+    border-left: none;
+    border-right: 1px solid #222222;
+}
+
+.overlay {
+    background: #520371;
+    background: linear-gradient(135deg, #2a023b, #520371, #8929ff);
+    color: #ffffff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.container.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    box-sizing: border-box;
+    transform: translateX(0);
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.overlay-panel h1 {
+    color: #ffffff;
+    font-size: 1.6rem;
+    letter-spacing: 3px;
+    margin: 0;
+}
+
+.overlay-panel p {
+    font-size: 0.8rem;
+    line-height: 20px;
+    letter-spacing: 1px;
+    margin: 15px 0 25px;
+    color: #cccccc;
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+.container.right-panel-active .overlay-left {
+    transform: translateX(0);
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+    transform: translateX(20%);
+}
+
+/* ==========================================================================
+   LOGOS Y ANIMACIONES INTERNAS
+   ========================================================================== */
+.logo-container {
+    margin-bottom: 20px;
+    transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    filter: drop-shadow(0 0 8px rgba(137, 41, 255, 0.6));
+}
+
+.logo-img {
+    width: 75px;
+    height: auto;
+    display: block;
+}
+
+.container.right-panel-active .logo-container {
+    transform: rotate(-360deg) scale(1.05);
+}
+
+/* ==========================================================================
+   ALERTA DE SEGURIDAD PARA MENSAJES FLASH
+   ========================================================================== */
+.flash-container {
+    width: 100%;
+    max-width: 768px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-alert {
+    width: 100%;
+    background-color: #0c0211;
+    color: #ffffff;
+    border: 1px solid #8929ff;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-sizing: border-box;
+    text-align: center;
+    border-left: 4px solid #8929ff;
+    animation: alertFadeIn 0.3s ease-out;
+}
+
+@keyframes alertFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   DISEÑO RESPONSIVO (MÓVILES)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+        min-height: auto;
+    }
+
+    .form-container {
+        position: relative;
+        width: 100%;
+        height: auto;
+        min-height: auto;
+    }
+    
+    .sign-in-container {
+        z-index: 2;
+    }
+
+    .sign-up-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .overlay-container {
+        display: none; /* Escondemos el panel deslizante en móviles para mejorar la usabilidad */
+    }
+
+    .container.right-panel-active .sign-in-container {
+        transform: none;
+    }
+
+    .container.right-panel-active .sign-up-container {
+        transform: none;
+    }
+}
+
+/* ==========================================================================
+   AJUSTES ADICIONALES Y COMPLEMENTARIOS PARA RESPONSIVIDAD EN MÓVILES
+   ========================================================================== */
+@media (max-width: 768px) {
+    .login-wrapper {
+        padding: 12px;
+    }
+
+    .brand-link {
+        font-size: 1.4rem;
+        letter-spacing: 2px;
+    }
+
+    .container {
+        border-radius: 4px;
+    }
+
+    form {
+        padding: 25px 20px;
+    }
+
+    form h1 {
+        font-size: 1.2rem;
+    }
+
+    /* Corrección de visibilidad/interacción de contenedores en móvil al cambiar estado */
+    .sign-in-container {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .sign-up-container {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+    }
+
+    .container.right-panel-active .sign-in-container {
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    .container.right-panel-active .sign-up-container {
+        position: relative;
+        opacity: 1;
+        pointer-events: auto;
+        z-index: 5;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand-link {
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+
+    .form-group input {
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+
+    .btn-primary {
+        padding: 12px;
+        font-size: 0.8rem;
+    }
+
+    .auth-alert {
+        font-size: 0.75rem;
+        padding: 12px 15px;
+    }
+}
+
+
+/* ==========================================================================
+   SHIRRY - EXPANSIÓN REGISTRO BRUTALISTA (INJECT AT THE END)
+   ========================================================================== */
+
+/* Contenedor en fila para dos columnas simétricas */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 100%;
+}
+
+/* Forzar que el grupo de dirección ocupe todo el ancho */
+.form-group-full {
+    grid-column: span 2;
+    width: 100%;
+}
+
+/* Blindaje de inputs brutales: esquinas rectas y bordes gruesos */
+.form-group input {
+    border-radius: 0 !important; /* Cero curvas */
+    border: 3px solid #000000 !important; /* Borde industrial macizo */
+    padding: 10px;
+    font-family: 'Courier New', monospace; /* Estilo terminal */
+    background-color: #1a1a1a; /* Fondo oscuro cyberpunk */
+    color: #ffffff;
+    box-sizing: border-box;
+}
+
+/* Efecto focus parpadeante neón al seleccionar campo */
+.form-group input:focus {
+    outline: none;
+    border-color: #00ff00 !important; /* Verde neón de advertencia */
+    box-shadow: 0 0 8px #00ff00;
+}
+
+/* Ajuste específico para el input de fecha (calendario) */
+input[type="date"] {
+    color-scheme: dark; /* Adapta el calendario nativo al modo oscuro */
+}
+
+
+/* ==========================================================================
+   SHIRRY - RECUPERACIÓN DE CONTRASEÑA POR PASOS (INJECT AT THE END)
+   ========================================================================== */
+
+/* Indicador superior de pasos rígido */
+.wizard-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    margin: 20px 0 40px 0;
+    width: 100%;
+}
+
+.wizard-steps::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 3px;
+    background-color: #333333;
+    z-index: 1;
+}
+
+.step-node {
+    width: 40px;
+    height: 40px;
+    background-color: #1a1a1a;
+    border: 3px solid #333333;
+    color: #888888;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    z-index: 2;
+}
+
+/* Estado activo: Iluminación de advertencia industrial */
+.step-node.active {
+    border-color: #ffaa00 !important;
+    color: #ffaa00 !important;
+    box-shadow: 0 0 10px #ffaa00;
+}
+
+/* Alertas de error de sistema estilo terminal corrupta */
+.alert-terminal-error {
+    background-color: #3a0d0d !important;
+    border: 3px solid #ff3333 !important;
+    color: #ff9999 !important;
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   SHIRRY - CAPTCHA DE SEGURIDAD INDUSTRIAL (INJECT AT THE END)
+   ========================================================================== */
+
+/* Bloque oculto por defecto con transición de parpadeo */
+.captcha-container {
+    display: none; /* Se activa mediante JavaScript */
+    background: #0d0d0d;
+    border: 3px solid #ff0055;
+    padding: 15px;
+    margin: 20px 0;
+    width: 100%;
+    box-sizing: border-box;
+    animation: captchaBoot 0.3s ease-out;
+}
+
+.captcha-container.active {
+    display: block !important;
+}
+
+.captcha-flex {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Imagen distorsionada tipo terminal CRT */
+.captcha-image-box {
+    background: #111111;
+    border: 3px solid #222222;
+    padding: 10px;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    user-select: none;
+    text-align: center;
+    width: 130px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Líneas de interferencia sobre el código */
+.captcha-image-box::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+}
+
+@keyframes captchaBoot {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}

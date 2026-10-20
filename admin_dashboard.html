@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIRRY STUDIOS — ADMIN CORE</title>
+    <!-- Conexión exclusiva a tus archivos CSS externos -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+
+</head>
+<body class="admin-body">
+
+    <div class="admin-dashboard-wrapper">
+        
+        <!-- ==========================================================================
+             COLUMNA IZQUIERDA: MENÚ DE NAVEGACIÓN FIJO (SIDEBAR)
+             ========================================================================== -->
+        <aside class="admin-brand-header" id="adminSidebar">
+            <div class="admin-avatar-slot">
+                <h2 class="admin-user-tag">ROOT_MÁSTER</h2>
+                <p class="admin-version-tag">> V.1.0.0 // ADMIN_LOGGED</p>
+
+                <!-- 🚀 BOTÓN INTERACTIVO DE FLECHA PARA COLAPSAR/MOSTRAR MENÚ -->
+                <button type="button" class="toggle-sidebar-btn" id="toggleSidebarBtn" title="Ocultar/Mostrar Menú">
+                    <span class="arrow-icon">▲</span>
+                </button>
+            </div>
+            
+            <nav class="admin-nav-links">
+                <!-- Enlaces controlados mediante parámetros de la URL para cambiar de pestaña -->
+                <a href="{{ url_for('admin_dashboard', seccion_activa='mensajes') }}" 
+                   class="admin-nav-item {% if seccion_activa == 'mensajes' %}active{% endif %}">
+                   [▶] CONTROL_MENSAJES
+                </a>
+                
+                <a href="{{ url_for('admin_dashboard', seccion_activa='productos') }}" 
+                   class="admin-nav-item {% if seccion_activa == 'productos' %}active{% endif %}">
+                   [▶] GESTIÓN_INVENTARIO
+                </a>
+                
+                <a href="{{ url_for('admin_dashboard', seccion_activa='usuarios') }}" 
+                   class="admin-nav-item {% if seccion_activa == 'usuarios' %}active{% endif %}">
+                   [▶] USUARIOS_REGISTRADOS
+                </a>
+                
+                <!-- Botón de Salida Segura hacia la tienda principal -->
+                <a href="{{ url_for('inicio') }}" class="admin-nav-item btn-exit-panel" style="color: #ff3366; margin-top: 40px; font-weight: bold; border-top: 1px dashed #222222; padding-top: 15px;">
+                   [◀] VOLVER_A_TIENDA
+                </a>
+            </nav>
+            
+            <footer class="admin-sidebar-footer">
+                <p>© 2026 SHIRRY STUDIOS // DB_STATUS: OK</p>
+            </footer>
+        </aside>
+
+        <!-- ==========================================================================
+             COLUMNA DERECHA: CONTENIDO CENTRAL VARIABLE
+             ========================================================================== -->
+        <main class="admin-main-content">
+            
+            <!-- Contenedor para los mensajes Flash del servidor -->
+            <div class="flash-container-admin">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    {% for category, message in messages %}
+                      <div class="auth-alert {{ category }}">
+                         > [{{ category | upper }}] {{ message }}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+            </div>
+
+            <!-- ------------------------------------------------------------------
+             PESTAÑA 1: CONTROL DE MENSAJES (SOPORTE)
+             ------------------------------------------------------------------ -->
+            {% if seccion_activa == 'mensajes' %}
+            <section class="admin-section-block">
+                
+                <!-- ENCABEZADO CON FLECHA PARA OCULTAR/MOSTRAR -->
+                <div class="collapsible-header" id="header-mensajes">
+                    <h1 class="admin-page-title" style="margin: 0;">> CONTROL DE COMANDO: REQ_SUPPORT</h1>
+                    <span class="toggle-arrow" id="arrow-mensajes">▼</span>
+                </div>
+                
+                <!-- CONTENIDO OCULTO POR DEFECTO -->
+                <div class="collapsible-content collapsed-content" id="content-mensajes">
+                    <!-- RECUADROS DE MÉTRICAS MÁSTER -->
+                    <div class="admin-metrics-grid">
+                        <div class="metric-card-cyber success-border">
+                            <span class="metric-label">TOTAL MENSAJES EN DB:</span>
+                            <h2 class="metric-value purple-text">{{ mensajes | length if mensajes else '0' }}</h2>
+                        </div>
+                        <div class="metric-card-cyber normal-border">
+                            <span class="metric-label">ESTADO DEL NÚCLEO:</span>
+                            <h2 class="metric-value green-text">ONLINE</h2>
+                        </div>
+                    </div>
+                    
+                    <!-- TABLA DE CONTROL DE ENTRADAS -->
+                    <div class="admin-table-box">
+                        <h3 class="table-subtitle">> HISTORIAL_SOPORTE_REGISTROS</h3>
+                        <div class="table-responsive-xl">
+                            <table class="table table-cyber-dark">
+                                <thead>
+                                    <tr>
+                                        <th>ID_REQ</th>
+                                        <th>CLIENTE_NAME</th>
+                                        <th>REQUERIMIENTO / MENSAJE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for msg in mensajes %}
+                                    <tr>
+                                        <td class="id-cell">#{{ msg['id'] }}</td>
+                                        <td class="text-name">{{ msg['nombre'] }}</td>
+                                        <td class="msg-text-cell">{{ msg['mensaje'] }}</td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="3" class="text-empty">> NO SE DETECTAN PETICIONES EN LA BASE DE DATOS...</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- ------------------------------------------------------------------
+                 PESTAÑA 2: GESTIÓN DE INVENTARIO / PRODUCTOS
+                 ------------------------------------------------------------------ -->
+            {% if seccion_activa == 'productos' %}
+            <section class="admin-section-block">
+                
+                <!-- ENCABEZADO CON FLECHA PARA OCULTAR/MOSTRAR -->
+                <div class="collapsible-header" id="header-productos">
+                    <div>
+                        <h1 class="admin-page-title" style="margin: 0;">> INVENTARIO CORE: CATALOG_MANAGE</h1>
+                        <p class="table-subtitle" style="margin: 5px 0 0 0;">> Gestión avanzada del catálogo de prendas con edición y control de tallas.</p>
+                    </div>
+                    <span class="toggle-arrow" id="arrow-productos">▼</span>
+                </div>
+                
+                <!-- CONTENIDO OCULTO POR DEFECTO -->
+                <div class="collapsible-content collapsed-content" id="content-productos">
+                    <div class="vertical-layout-cyber" style="display: flex; flex-direction: column; gap: 40px;">
+                        
+                        <!-- FORMULARIO DE INYECCIÓN -->
+                        <div class="admin-form-wrapper" style="border: 1px solid #111111; background-color: #0a0a0a; padding: 30px; max-width: 600px;">
+                            <form action="/shirry-admin/add-product" method="POST" enctype="multipart/form-data">
+                                <h3 class="form-section-title" style="color: #ffffff; font-size: 1rem; margin: 0 0 10px 0; letter-spacing: 2px;">> INYECTAR NUEVA PRENDA</h3>
+                                
+                                <div class="form-group-cyber" style="width: 100%; display: flex; flex-direction: column; gap: 5px;">
+                                    <label class="cyber-label">SERIAL / ID_PRODUCTO</label>
+                                    <input type="text" name="id_producto" class="cyber-input" placeholder="Ej: PROD-101" required autocomplete="off">
+                                </div>
+
+                                <div class="form-group-cyber" style="width: 100%; display: flex; flex-direction: column; gap: 5px;">
+                                    <label class="cyber-label">NOMBRE DE PRENDA</label>
+                                    <input type="text" name="nombre" class="cyber-input" placeholder="Ej: Cargo Futurista" required autocomplete="off">
+                                </div>
+
+                                <div class="form-group-cyber" style="width: 100%; display: flex; flex-direction: column; gap: 5px;">
+                                    <label class="cyber-label">CATEGORÍA / CLASIFICACIÓN EXPANSIBLE</label>
+                                    <select name="categoria" class="cyber-select" required>
+                                        <option value="" disabled selected>-- SELECCIONAR --</option>
+                                        <option value="camisetas">CAMISETAS / TOPS</option>
+                                        <option value="chaquetas">CHAQUETAS / HOODIES</option>
+                                        <option value="pantalones">PANTALONES / CARGOS</option>
+                                        <option value="accesorios">ACCESORIOS / RELOJES</option>
+                                    </select>
+                                </div>
+
+                                <!-- Selector Múltiple de Tallas Reales -->
+                                <div class="form-group-cyber" style="width: 100%; display: flex; flex-direction: column; gap: 5px;">
+                                    <label class="cyber-label">TALLAS DISPONIBLES (MARCA LAS QUE APLIQUEN)</label>
+                                    <div style="display: flex; gap: 15px; background: #000000; padding: 12px; border: 1px solid #222222; flex-wrap: wrap; width: 100%; box-sizing: border-box;">
+                                        <label style="font-family: monospace; font-size: 12px; color: #fff; cursor: pointer;"><input type="checkbox" name="tallas" value="S" checked> S</label>
+                                        <label style="font-family: monospace; font-size: 12px; color: #fff; cursor: pointer;"><input type="checkbox" name="tallas" value="M" checked> M</label>
+                                        <label style="font-family: monospace; font-size: 12px; color: #fff; cursor: pointer;"><input type="checkbox" name="tallas" value="L" checked> L</label>
+                                        <label style="font-family: monospace; font-size: 12px; color: #fff; cursor: pointer;"><input type="checkbox" name="tallas" value="XL"> XL</label>
+                                        <label style="font-family: monospace; font-size: 12px; color: #fff; cursor: pointer;"><input type="checkbox" name="tallas" value="UNICA"> ÚNICA</label>
+                                    </div>
+                                </div>
+
+                                <!-- FILA DE SELECTORES MÁSTER -->
+                                <div class="form-row-cyber" style="display: flex; gap: 20px; width: 100%; box-sizing: border-box;">
+                                    <div class="form-group-cyber" style="width: 33.33%; display: flex; flex-direction: column; gap: 5px;">
+                                        <label class="cyber-label">ESTADO EN PANEL</label>
+                                        <select name="estado" class="cyber-select" style="width: 100%; background: #000; border: 1px solid #222; padding: 12px; color: #fff; font-family: monospace;" required>
+                                            <option value="Activo" selected>ACTIVO (VISIBLE)</option>
+                                            <option value="Inactivo">INACTIVO (OCULTO)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group-cyber" style="width: 33.33%; display: flex; flex-direction: column; gap: 5px;">
+                                        <label class="cyber-label">DESTINO / COLECCIÓN</label>
+                                        <select name="coleccion" class="cyber-select" style="width: 100%; background: #000; border: 1px solid #222; padding: 12px; color: #fff; font-family: monospace;" required>
+                                            <option value="regular" selected>TIENDA GLOBAL</option>
+                                            <option value="eutanasia">COLECCIÓN EUTANASIA</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group-cyber" style="width: 33.33%; display: flex; flex-direction: column; gap: 5px;">
+                                        <label class="cyber-label">PRECIO / UNIT (COP)</label>
+                                        <input type="number" name="precio" class="cyber-input" placeholder="Ej: 350000" style="width: 100%; background: #000; border: 1px solid #222; padding: 12px; color: #fff; font-family: monospace; box-sizing: border-box;" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-cyber" style="width: 100%; display: flex; flex-direction: column; gap: 5px;">
+                                    <label class="cyber-label">IMAGEN DE PRENDA (.PNG / .WEBP REORTADO)</label>
+                                    <div class="cyber-upload-zone">
+                                        <input type="file" name="imagen_archivo" class="cyber-file-input" required>
+                                        <p class="upload-tip">> FORMATOS PERMITIDOS: PNG, JPG, WEBP.</p>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn-primary-cyber">INYECTAR REGISTRO EN MYSQL</button>
+                            </form>
+                        </div>
+
+                        <!-- TABLA DE INVENTARIO -->
+<!-- TABLA DE INVENTARIO -->
+<div class="admin-table-box">
+    <h3 class="table-subtitle">> HOJA_DE_BALANCE_PRODUCTOS</h3>
+    <div class="table-responsive-xl">
+        <table class="table table-cyber-dark">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>IMAGEN</th>
+                    <th>NOMBRE_PRENDA</th>
+                    <th>CATEGORÍA</th>
+                    <th>COLECCIÓN</th> <!-- 🌟 CORREGIDO: Agregada cabecera faltante -->
+                    <th>TALLAS</th>    <!-- Aquí caerá la lista de tallas de la BD -->
+                    <th>PRECIO</th>
+                    <th style="text-align: right;">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                <!-- FILA DE VISUALIZACIÓN -->
+                <tr class="border-table-row" id="row-{{ producto['id'] }}">
+                    <td class="bar-cell"># {{ producto['id'] }}</td>
+                    <td>
+                        <img src="{{ url_for('static', filename='imagenes/productos/' + producto['imagen']) }}" alt="Prenda" class="admin-prod-thumb" style="width: 35px; height: 35px; object-fit: contain; background-color: #111111; border-radius: 4px;">
+                    </td>
+                    <td class="class-text-mono" style="text-transform: uppercase;">{{ producto['nombre'] }}</td>
+                    <td class="class-text-mono" style="text-transform: uppercase;">{{ producto['categoria'] }}</td>
+                    <td class="class-text-mono" style="color: #00FF66; text-transform: uppercase;">{{ producto['coleccion'] }}</td>
+                    <td class="class-text-mono" style="text-transform: uppercase;">{{ producto['talla'] }}</td> <!-- 🌟 CORREGIDO: Celda dinámica de tallas recuperada -->
+                    <td class="price-cell" style="font-weight: bold;">$ {{ "{:,.0f}".format(producto['precio'] | float) }} COP</td>
+                    <td style="text-align: right; white-space: nowrap;">
+                        <button class="btn-action-admin edit-prod-btn btn-trigger-editar" data-id="{{ producto['id'] }}" style="background: none; border: none; color: #00FF66; cursor: pointer; font-family: monospace; font-weight: bold; margin-right: 10px; padding: 4px;">[EDITAR]</button>
+                        
+                        <form action="/shirry-admin/delete-product/{{ producto['id'] }}" method="POST" onsubmit="return confirm('¿Desea eliminar este producto de forma permanente?');" style="display: inline; margin: 0; padding: 0;">
+                            <button type="submit" class="btn-action-admin del-prod-btn" style="background: none; border: none; color: #FF3333; cursor: pointer; font-family: monospace; font-weight: bold; padding: 4px;">[ELIMINAR]</button>
+                        </form>
+                    </td>
+                </tr>
+
+                <!-- FILA DESPLEGABLE: FORMULARIO DE EDICIÓN -->
+                <tr id="edit-row-{{ producto['id'] }}" class="edit-row-container" style="display: none; background-color: #050505;">
+                    <td colspan="8" style="padding: 15px;"> <!-- 🌟 CORREGIDO: Colspan subió a 8 para cubrir toda la fila -->
+                        <form action="/shirry-admin/update-product/{{ producto['id'] }}" method="POST" enctype="multipart/form-data" style="display: flex; gap: 15px; align-items: center; width: 100%;">
+                            
+                            <div style="display: flex; flex-direction: column; gap: 4px; flex: 2;">
+                                <label style="font-size: 0.65rem; color: #666; font-family: monospace;">NOMBRE:</label>
+                                <input type="text" name="nuevo_nombre" value="{{ producto['nombre'] }}" required style="background-color: #000000; border: 1px solid #222222; padding: 6px; color: #ffffff; font-family: monospace; width: 100%; box-sizing: border-box;">
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 4px; flex: 1.5;">
+                                <label style="font-size: 0.65rem; color: #666; font-family: monospace;">PRECIO:</label>
+                                <input type="number" name="nuevo_precio" value="{{ producto['precio'] }}" required style="background-color: #000000; border: 1px solid #222222; padding: 6px; color: #ffffff; font-family: monospace; width: 100%; box-sizing: border-box;">
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 4px; flex: 1.5;">
+                                <label style="font-size: 0.65rem; color: #666; font-family: monospace;">CATEGORÍA:</label>
+                                <select name="nueva_categoria" style="background-color: #000000; border: 1px solid #222222; padding: 6px; color: #ffffff; font-family: monospace; width: 100%; box-sizing: border-box;">
+                                    <option value="camisetas" {% if producto['categoria'] == 'camisetas' %}selected{% endif %}>CAMISETAS</option>
+                                    <option value="chaquetas" {% if producto['categoria'] == 'chaquetas' %}selected{% endif %}>CHAQUETAS</option>
+                                    <option value="pantalones" {% if producto['categoria'] == 'pantalones' %}selected{% endif %}>PANTALONES</option>
+                                    <option value="calzado" {% if producto['categoria'] == 'calzado' %}selected{% endif %}>CALZADO</option>
+                                    <option value="accesorios" {% if producto['categoria'] == 'accesorios' %}selected{% endif %}>ACCESORIOS</option>
+                                </select>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 4px; flex: 1.2;">
+                                <label style="font-size: 0.65rem; color: #666; font-family: monospace;">ESTADO:</label>
+                                <select name="nuevo_estado" style="background-color: #000000; border: 1px solid #222222; padding: 6px; color: #ffffff; font-family: monospace; width: 100%; box-sizing: border-box;">
+                                    <option value="Activo" {% if producto['estado'] == 'Activo' %}selected{% endif %}>ACTIVO</option>
+                                    <option value="Inactive" {% if producto['estado'] == 'Inactive' %}selected{% endif %}>INACTIVO</option>
+                                </select>
+                            </div>
+
+                            <!-- 🌟 NUEVO: CONTENEDOR PARA EDITAR LA COLECCIÓN -->
+                            <div style="display: flex; flex-direction: column; gap: 4px; flex: 1.5;">
+                                <label style="font-size: 0.65rem; color: #666; font-family: monospace;">COLECCIÓN:</label>
+                                <input type="text" name="nueva_coleccion" value="{{ producto['coleccion'] }}" required style="background-color: #000000; border: 1px solid #222222; padding: 6px; color: #ffffff; font-family: monospace; width: 100%; box-sizing: border-box;">
+                            </div>
+
+                            <!-- 🌟 NUEVO: CONTENEDOR PARA EDITAR LAS TALLAS (CHECKBOXES) -->
+                            <div style="display: flex; flex-direction: column; gap: 4px; flex: 2; min-width: 180px;">
+                                <label style="font-size: 0.65rem; color: #666; font-family: monospace;">TALLAS DISPONIBLES:</label>
+                                <div style="display: flex; gap: 8px; align-items: center; background-color: #000000; border: 1px solid #222222; padding: 5px; font-size: 0.75rem; font-family: monospace;">
+                                    <!-- Con "in producto['talla']" dejamos marcado por defecto lo que ya tenga guardado en la BD -->
+                                    <label><input type="checkbox" name="nuevas_tallas" value="S" {% if 'S' in producto['talla'] %}checked{% endif %}> S</label>
+                                    <label><input type="checkbox" name="nuevas_tallas" value="M" {% if 'M' in producto['talla'] %}checked{% endif %}> M</label>
+                                    <label><input type="checkbox" name="nuevas_tallas" value="L" {% if 'L' in producto['talla'] %}checked{% endif %}> L</label>
+                                    <label><input type="checkbox" name="nuevas_tallas" value="XL" {% if 'XL' in producto['talla'] %}checked{% endif %}> XL</label>
+                                    <label><input type="checkbox" name="nuevas_tallas" value="ÚNICA" {% if 'ÚNICA' in producto['talla'] or 'UNICA' in producto['talla'] %}checked{% endif %}> ÚNICA</label>
+                                </div>
+                            </div>
+
+
+                            <div style="display: flex; flex-direction: column; gap: 4px; flex: 1.5;">
+                                <label style="font-size: 0.65rem; color: #666; font-family: monospace;">REEMPLAZAR IMG:</label>
+                                <input type="file" name="nueva_imagen_archivo" style="font-family: monospace; font-size: 0.75rem; color: #888; width: 100%;">
+                            </div>
+
+                            <div style="margin-top: 14px;">
+                                <button type="submit" style="background-color: #00FF66; color: #000000; border: none; padding: 8px 12px; font-family: monospace; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 0.75rem;">[ACTUALIZAR]</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                                    <!-- MENSAJE TABLA VACÍA -->
+                                        <tr>
+                                        <td colspan="8" class="text-empty" style="text-align: center; padding: 40px 0; color: #444444; font-family: monospace;">
+                                            > CONFIG_EMPTY: NO SE DETECTAN PRENDAS EN LA TABLA PRODUCTOS...
+                                        </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- ------------------------------------------------------------------
+               PESTAÑA 3: CONTROL DE CUENTAS / USUARIOS REGISTRADOS
+             ------------------------------------------------------------------ -->
+            {% if seccion_activa == 'usuarios' %}
+            <section class="admin-section-block">
+                
+                <!-- ENCABEZADO CON FLECHA PARA OCULTAR/MOSTRAR -->
+                <div class="collapsible-header" id="header-usuarios">
+                    <div>
+                        <h1 class="admin-page-title" style="margin: 0;">> CONTROL DE DATOS: USER_REGISTRY</h1>
+                        <p class="table-subtitle" style="margin: 5px 0 0 0;">> Monitoreo y depuración de credenciales vinculadas en la plataforma.</p>
+                    </div>
+                    <span class="toggle-arrow" id="arrow-usuarios">▼</span>
+                </div>
+                
+                <!-- CONTENIDO OCULTO POR DEFECTO -->
+                <div class="collapsible-content collapsed-content" id="content-usuarios">
+                    <div class="admin-table-box">
+                        <h3 class="table-subtitle">> ARCHIVO_MAESTRO_CUENTAS</h3>
+                        <div class="table-responsive-xl">
+                            <table class="table table-cyber-dark">
+                                <thead>
+                                    <tr>
+                                        <th>ID_USR</th>
+                                        <th>CLIENTE_NAME</th>
+                                        <th>EMAIL_ADDRESS</th>
+                                        <th>HASH_PASSWORD_SAFETY</th>
+                                        <th style="text-align: right;">ACCIONES</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in usuarios_lista %}
+                                    <tr style="border-bottom: 1px solid #111111;">
+                                        <td class="id-cell">#{{ user.id }}</td>
+                                        <td class="text-name">{{ user.nombre | upper }}</td>
+                                        <td style="color: #aaaaaa;">{{ user.email }}</td>
+                                        <td style="color: #444444; font-size: 11px; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                            {{ user.contrasena }}
+                                        </td>
+                                        <td style="text-align: right; white-space: nowrap;">
+                                            <button type="button" onclick="document.getElementById('edit-row-{{ user.id }}').style.display = document.getElementById('edit-row-{{ user.id }}').style.display === 'none' ? 'table-row' : 'none';" style="background: none; border: none; color: #8929ff; cursor: pointer; font-family: monospace; font-size: 11px; font-weight: bold; margin-right: 10px; padding: 0;">
+                                                [EDITAR]
+                                            </button>
+
+                                            <form action="{{ url_for('admin_delete_user', id_usuario=user.id) }}" method="POST" style="display: inline; padding: 0; background: none;" onsubmit="return confirm('¿Confirmar purga permanente para el usuario #' + '{{ user.id }}' + '?');">
+                                                <button type="submit" class="btn-delete-cyber" style="color: #ff3366;">
+                                                    [BORRAR]
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr id="edit-row-{{ user.id }}" style="display: none; background-color: #090214; border-bottom: 1px solid #1a0a2a;">
+                                        <td colspan="5" style="padding: 15px 20px;">
+                                            <form action="{{ url_for('admin_update_user', id_usuario=user.id) }}" method="POST" style="display: flex; gap: 15px; align-items: center; background: none; padding: 0; width: 100%;">
+                                                <span style="color: #8929ff; font-size: 0.75rem; font-weight: bold;">> MOD_DATA:</span>
+                                                
+                                                <input type="text" name="nuevo_nombre" value="{{ user.nombre }}" placeholder="Nuevo Nombre" required style="background: #000; border: 1px solid #222; padding: 6px 10px; color: #fff; font-family: monospace; font-size: 0.8rem; flex: 1;">
+                                                
+                                                <input type="email" name="nuevo_email" value="{{ user.email }}" placeholder="Nuevo Correo" required style="background: #000; border: 1px solid #222; padding: 6px 10px; color: #fff; font-family: monospace; font-size: 0.8rem; flex: 1;">
+                                                
+                                                <button type="submit" style="background: #ffffff; color: #000; border: none; padding: 6px 15px; font-family: monospace; font-weight: bold; font-size: 0.75rem; cursor: pointer; text-transform: uppercase;">
+                                                    [ACTUALIZAR_SISTEMA]
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="5" class="text-empty">> CONFIG_EMPTY: NO SE DETECTAN CUENTAS REGISTRADAS EN LA TABLA USUARIOS...</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% endif %}
+
+        </main> <!-- Cierre de la columna derecha admin-main-content -->
+    </div> <!-- Cierre del contenedor principal admin-dashboard-wrapper -->
+
+    <!-- ==========================================================================
+         SCRIPTS DE INTERACCIÓN CORE
+         ========================================================================== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Lógica para desplegar/ocultar el menú lateral desde la flecha
+            const toggleBtn = document.getElementById("toggleSidebarBtn");
+            const sidebar = document.getElementById("adminSidebar");
+
+            if (toggleBtn && sidebar) {
+                toggleBtn.addEventListener("click", () => {
+                    sidebar.classList.toggle("collapsed");
+                });
+            }
+
+            // Lógica interactiva para ocultar/mostrar las secciones principales por ítem
+            const secciones = ['mensajes', 'productos', 'usuarios'];
+
+            secciones.forEach(sec => {
+                const header = document.getElementById(`header-${sec}`);
+                const content = document.getElementById(`content-${sec}`);
+                const arrow = document.getElementById(`arrow-${sec}`);
+
+                if (header && content && arrow) {
+                    header.addEventListener("click", () => {
+                        content.classList.toggle("collapsed-content");
+                        arrow.classList.toggle("rotated");
+                    });
+                }
+            });
+
+            // Lógica para desplegar la fila de edición de productos
+            const triggerEditBtns = document.querySelectorAll('.btn-trigger-editar');
+            triggerEditBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-id');
+                    const editRow = document.getElementById(`edit-row-${id}`);
+                    if (editRow) {
+                        editRow.style.display = (editRow.style.display === 'none' || editRow.style.display === '') ? 'table-row' : 'none';
+                    }
+                });
+            });
+
+            // Lógica preexistente para previsualización de imágenes
+            const fileInput = document.querySelector('input[name="imagen_archivo"]');
+            const uploadZone = document.querySelector('.cyber-upload-zone');
+
+            if (fileInput && uploadZone) {
+                fileInput.addEventListener("change", (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            let existingImg = uploadZone.querySelector('.preview-thumb-admin');
+                            if (!existingImg) {
+                                existingImg = document.createElement('img');
+                                existingImg.className = 'preview-thumb-admin';
+                                existingImg.style.maxHeight = '120px';
+                                existingImg.style.marginTop = '15px';
+                                existingImg.style.border = '1px solid #8929ff';
+                                uploadZone.appendChild(existingImg);
+                            }
+                            existingImg.src = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+            
